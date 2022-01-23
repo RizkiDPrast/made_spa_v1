@@ -1,0 +1,39 @@
+// app global css in SCSS form
+.q-card.cursor-pointer {
+  transition: all 0.3s ease-out;
+}
+.q-card.cursor-pointer:hover {
+  box-shadow: 0 1px 0 rgba(220, 220, 220, 0.5);
+  transform: scale(1.05);
+  background: rgba(220, 220, 220, 0.5);
+}
+
+body {
+  color: #202124;
+}
+
+@media print {
+  .q-notifications {
+    display: none !important;
+  }
+}
+
+:root {
+  --animate-duration: 1s;
+  --animate-delay: 0.9s;
+  --text-light: $light;
+}
+
+.text-light {
+  color: $light;
+}
+
+// input:-webkit-autofill {
+//   box-shadow: 0 0 0 50px $light inset;
+//   -webkit-text-fill-color: $light;
+// }
+
+// input:-webkit-autofill:focus {
+//   box-shadow: 0 0 0 50px $light inset;
+//   -webkit-text-fill-color: $light;
+// }
