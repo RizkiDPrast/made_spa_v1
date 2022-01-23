@@ -151,9 +151,9 @@ module.exports = function(/* ctx */) {
       workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `Xpc Fe`,
-        short_name: `Xpc Fe`,
-        description: `Xing Pet Care Clinic App`,
+        name: `M.A.D.E App`,
+        short_name: `M.A.D.E App`,
+        description: `M.A.D.E Pet Care`,
         display: "standalone",
         orientation: "portrait",
         background_color: "#ffffff",
@@ -216,7 +216,7 @@ module.exports = function(/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: "xpc_fe"
+        appId: "made_fe"
       },
 
       // More info: https://v1.quasar.dev/quasar-cli/developing-electron-apps/node-integration

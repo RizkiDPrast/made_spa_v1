@@ -1,8 +1,8 @@
 <template>
   <q-drawer
     side="left"
-    :value="true"
-    :mini="miniModel"
+    :value="$q.screen.gt.sm || miniModel"
+    :mini="$q.screen.gt.sm ? miniModel : false"
     bordered
     :breakpoint="500"
     content-class="text-white"
@@ -20,7 +20,8 @@
             </q-item-label>
             <q-item
               v-ripple
-              :clickable="$route.path === menu.to ? false : true"
+              :clickable="cPath === menu.to ? false : true"
+              @click="clickMenu(cPath === menu.to)"
               active-class="bg-white text-primary menu-active"
               :to="menu.to"
               :class="menu.class"
@@ -60,6 +61,7 @@
                   v-if="menu.sideTo"
                   round
                   :icon="menu.sideIcon"
+                  @click="() => clickMenu(cPath === menu.to)"
                   :to="menu.sideTo"
                 />
                 <q-badge
@@ -85,12 +87,26 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      cPath: this.$router.path
+    };
   },
   mounted() {
     setTimeout(() => {
       this.countBoarding();
     }, 3000);
+  },
+  methods: {
+    clickMenu(skip) {
+      if (!skip && this.$q.screen.lt.md) {
+        this.$store.commit("app/toggleMiniLeft", false);
+      }
+    }
+  },
+  watch: {
+    "$router.path"(val) {
+      this.cPath = val;
+    }
   },
   computed: {
     inPatientCount() {
@@ -101,19 +117,20 @@ export default {
         return this.mini;
       },
       set(val) {
+        console.log(val);
         this.$emit("update:mini", val);
       }
     },
     menus() {
       var arr = [
-        {
-          to: "/app/rooms/dashboard",
-          label: "Dashboard",
-          icon: "las la-chart-bar",
-          caption: "Analytical overview",
-          class: "text-warning",
-          filter: this.isFinance || this.isAdmin
-        },
+        // {
+        //   to: "/app/rooms/dashboard",
+        //   label: "Dashboard",
+        //   icon: "las la-chart-bar",
+        //   caption: "Analytical overview",
+        //   class: "text-warning",
+        //   filter: this.isFinance || this.isAdmin
+        // },
         {
           to: "/app/rooms/on-sites",
           label: "Queue",
@@ -132,53 +149,53 @@ export default {
           icon: "las la-id-card",
           caption: "Managing clients, pets and signalements"
         },
-        {
-          to: "/app/rooms/patients",
-          label: "Patients",
-          icon: "las la-horse",
-          caption: "Search for client based on patients"
-        },
-        {
-          to: "/app/rooms/sales",
-          label: "Sales",
-          icon: "las la-cash-register",
-          caption: "Point of sales system"
-        },
-        {
-          to: "/app/rooms/purchases",
-          label: "Purchases",
-          icon: "las la-shopping-cart",
-          caption: "Company purchases"
-        },
-        {
-          to: "/app/rooms/stock-opname",
-          label: "Stock Opname",
-          icon: "las la-clipboard-check",
-          caption: "Managing stocks of all inventory-managed products",
-          filter: this.isFinance || this.isAdmin
-        },
-        { separator: 1 },
-        {
-          to: "/app/rooms/unpaid-receipts",
-          label: "Unpaid Receipts",
-          icon: "las la-dizzy",
-          caption: "List of all unpaid receipts",
-          class: "text-negative"
-        },
-        {
-          to: "/app/rooms/untransferred-items",
-          label: "Untransferred Items",
-          icon: "las la-people-carry",
-          caption:
-            "Items that has been used but not yet transferred to receipt for sale"
-        },
+        // {
+        //   to: "/app/rooms/patients",
+        //   label: "Patients",
+        //   icon: "las la-horse",
+        //   caption: "Search for client based on patients"
+        // },
+        // {
+        //   to: "/app/rooms/sales",
+        //   label: "Sales",
+        //   icon: "las la-cash-register",
+        //   caption: "Point of sales system"
+        // },
+        // {
+        //   to: "/app/rooms/purchases",
+        //   label: "Purchases",
+        //   icon: "las la-shopping-cart",
+        //   caption: "Company purchases"
+        // },
+        // {
+        //   to: "/app/rooms/stock-opname",
+        //   label: "Stock Opname",
+        //   icon: "las la-clipboard-check",
+        //   caption: "Managing stocks of all inventory-managed products",
+        //   filter: this.isFinance || this.isAdmin
+        // },
+        // { separator: 1 },
+        // {
+        //   to: "/app/rooms/unpaid-receipts",
+        //   label: "Unpaid Receipts",
+        //   icon: "las la-dizzy",
+        //   caption: "List of all unpaid receipts",
+        //   class: "text-negative"
+        // },
+        // {
+        //   to: "/app/rooms/untransferred-items",
+        //   label: "Untransferred Items",
+        //   icon: "las la-people-carry",
+        //   caption:
+        //     "Items that has been used but not yet transferred to receipt for sale"
+        // },
 
-        {
-          to: "/app/rooms/all-client-deposits",
-          label: "All client deposits",
-          icon: "las la-coins",
-          caption: "Remaining deposits from all clients"
-        },
+        // {
+        //   to: "/app/rooms/all-client-deposits",
+        //   label: "All client deposits",
+        //   icon: "las la-coins",
+        //   caption: "Remaining deposits from all clients"
+        // },
 
         // // following is not used
         // {
@@ -204,37 +221,37 @@ export default {
           caption: "Managing in-patients and pet boarding",
           badge: this.inPatientCount
         },
-        { separator: 1 },
-        { label: "Human resource" },
-        {
-          to: "/app/rooms/form-cuti",
-          label: "Cuti staff",
-          icon: "las la-snowboarding",
-          caption: ""
-        },
-        { separator: 1 },
-        { label: "Finance", filter: this.isFinance || this.isAdmin },
-        {
-          to: "/app/rooms/products",
-          label: "Product",
-          icon: "las la-tags",
-          caption: "Managing Goods & Services",
-          filter: this.isFinance || this.isAdmin
-        },
-        {
-          to: "/app/rooms/finance/commissions",
-          label: "Commissions",
-          icon: "las la-file-contract",
-          caption: "Managing employee's commissions",
-          filter: this.isFinance || this.isAdmin
-        },
-        {
-          to: "/app/rooms/finance/salaries",
-          label: "Salaries",
-          icon: "las la-hand-holding-usd",
-          caption: "Managing employee's commissions",
-          filter: this.isFinance || this.isAdmin
-        },
+        // { separator: 1 },
+        // { label: "Human resource" },
+        // {
+        //   to: "/app/rooms/form-cuti",
+        //   label: "Cuti staff",
+        //   icon: "las la-snowboarding",
+        //   caption: ""
+        // },
+        // { separator: 1 },
+        // { label: "Finance", filter: this.isFinance || this.isAdmin },
+        // {
+        //   to: "/app/rooms/products",
+        //   label: "Product",
+        //   icon: "las la-tags",
+        //   caption: "Managing Goods & Services",
+        //   filter: this.isFinance || this.isAdmin
+        // },
+        // {
+        //   to: "/app/rooms/finance/commissions",
+        //   label: "Commissions",
+        //   icon: "las la-file-contract",
+        //   caption: "Managing employee's commissions",
+        //   filter: this.isFinance || this.isAdmin
+        // },
+        // {
+        //   to: "/app/rooms/finance/salaries",
+        //   label: "Salaries",
+        //   icon: "las la-hand-holding-usd",
+        //   caption: "Managing employee's commissions",
+        //   filter: this.isFinance || this.isAdmin
+        // },
         {
           to: "/app/rooms/finance/reports",
           label: "Reports",
@@ -250,15 +267,15 @@ export default {
           icon: "las la-user-tie",
           caption: "Managing app user",
           filter: this.isAdmin
-        },
-        {
-          to: "/app/rooms/utilities",
-          label: "Utilities",
-          icon: "las la-database",
-          caption: "Database management",
-          filter: this.isAdmin,
-          class: "text-secondary"
         }
+        // {
+        //   to: "/app/rooms/utilities",
+        //   label: "Utilities",
+        //   icon: "las la-database",
+        //   caption: "Database management",
+        //   filter: this.isAdmin,
+        //   class: "text-secondary"
+        // }
       ];
 
       return arr;

@@ -2,11 +2,7 @@
   <q-layout view="hhh Lpr fff" class="room-layout">
     <RoomSelectHeader ref="rselect"> </RoomSelectHeader>
     <q-page-container class="screen-height">
-      <transition
-        appear
-        enter-active-class="animated fadeIn"
-        leave-active-class="animated fadeOut"
-      >
+      <transition appear enter-active-class="animated fadeIn">
         <router-view :key="new Date().getMilliseconds()" />
       </transition>
     </q-page-container>
