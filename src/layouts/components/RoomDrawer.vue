@@ -65,7 +65,7 @@
                   :to="menu.sideTo"
                 />
                 <q-badge
-                  v-if="menu.badge"
+                  v-if="!miniModel && menu.badge"
                   :label="menu.badge"
                   color="warning"
                 />
