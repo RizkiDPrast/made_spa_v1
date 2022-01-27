@@ -44,6 +44,7 @@
                   dense
                   outlined
                   class="col-6"
+                  autofocus
                 />
 
                 <q-input
@@ -82,21 +83,42 @@
                   class="col-6"
                 />
 
-                <!-- <user-select
-                  readonly
+                <user-select
+                  multiple
                   label="Treated by"
                   :roleNames="['veterinarian']"
-                  v-model="model.treatedBy"
+                  v-model="model.vets"
                   style="min-width:135px;"
                   dense
                   outlined
                   class="col-12"
-                  hint="Please input from medical record"
-                /> -->
+                />
+
+                <money-field
+                  v-model="model.clinicFee"
+                  dense
+                  outlined
+                  class="col-xs-12 col-md-12"
+                  label="Clinic Fee"
+                />
+
+                <q-input
+                  label="Notes"
+                  v-model="model.notes"
+                  name="notes"
+                  v-validate="''"
+                  :error="errors.has('notes')"
+                  :error-message="errors.first('notes')"
+                  dense
+                  outlined
+                  class="col-12"
+                  autogrow
+                />
               </div>
             </q-scroll-area>
 
             <q-btn
+              type="submit"
               :loading="loading"
               icon="las la-save"
               label="Save"
@@ -115,7 +137,9 @@
 </template>
 
 <script>
+import MoneyField from "src/components/MoneyField.vue";
 export default {
+  components: { MoneyField },
   props: {
     value: {
       type: Object,
@@ -158,6 +182,11 @@ export default {
         if (m.pulse) {
           m.pulse = Number(m.pulse);
         }
+
+        if (m.clinicFee) {
+          m.clinicFee = Number(m.clinicFee);
+        }
+
         var res = isEditing
           ? await this.$api.signalements.putVisit(m)
           : await this.$api.signalements.post(m);

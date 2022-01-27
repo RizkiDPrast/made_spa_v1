@@ -3,8 +3,8 @@
     v-bind="$attrs"
     v-model="expanded"
     class="shadow-4"
-    header-class="bg-primary text-white "
-    expand-icon-class="text-white"
+    header-class="bg-negative text-grey-3 "
+    expand-icon-class=" text-grey-3"
   >
     <template v-slot:header>
       <q-item-section avatar>
@@ -45,7 +45,7 @@
           @selected-row-change="selectedChanged"
           @update:editing-row="petEditingModeHandle"
         /> -->
-        <q-table
+        <my-table
           flat
           row-key="id"
           :data="data"
@@ -54,6 +54,8 @@
           @request="fetch"
           :pagination.sync="pager"
           class="table"
+          :filter="filter"
+          add-btn-class="hidden"
         >
           <template #body="props">
             <q-tr
@@ -121,7 +123,7 @@
               </q-td>
             </q-tr>
           </template>
-        </q-table>
+        </my-table>
       </q-card-section>
     </q-card>
   </q-expansion-item>
@@ -153,6 +155,7 @@ export default {
       loading: false,
       patient: new Patient({ clientId: this.clientId }),
       data: [],
+      filter: undefined,
       columns: [
         {
           name: "actions",
@@ -304,10 +307,9 @@ export default {
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 tr.selected td
   background-color: #8080801a;
-.table {
-  min-height:450px;
-}
+.q-table__container.q-table--horizontal-separator.column.no-wrap.q-table__card.q-table--flat.q-table--dense.q-table--no-wrap
+  min-height: 450px;
 </style>

@@ -191,7 +191,7 @@
 
           <div class="col-xs-12 text-right">
             <submit-button
-              color="positive"
+              color="primary"
               :loading="loading"
               @click="saveClientDetails"
               class=""

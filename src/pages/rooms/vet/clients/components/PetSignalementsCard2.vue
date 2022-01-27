@@ -1,6 +1,6 @@
 <template>
   <q-card bordered class="q-mt-sm" :class="{ editing: isEditing }">
-    <q-toolbar class="bg-primary text-white">
+    <q-toolbar class="bg-warning text-grey-3">
       <q-avatar icon="las la-book" />
 
       <q-toolbar-title style="font-size:14px;" v-html="title">

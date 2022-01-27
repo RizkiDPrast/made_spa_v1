@@ -3,8 +3,8 @@
     v-model="expanded"
     v-if="patient.id"
     class="shadow-4"
-    header-class="bg-primary text-white "
-    expand-icon-class="text-white"
+    header-class="bg-positive text-grey-3 "
+    expand-icon-class="text-grey-3  "
   >
     <template v-slot:header>
       <q-item-section avatar>
@@ -29,7 +29,7 @@
     </template>
     <q-card>
       <q-card-section style="padding-left:0;padding-right:0">
-        <q-table
+        <my-table
           dense
           flat
           row-key="id"
@@ -39,6 +39,8 @@
           :loading="loading"
           @request="onRequest"
           class="table"
+          :filter="filter"
+          add-btn-class="hidden"
         >
           <template #body="props">
             <q-tr
@@ -91,11 +93,26 @@
               </q-td>
               <q-td key="vets">
                 <user-badge
+                  class="q-mr-xs bg-accent"
                   v-for="u in props.row.vets"
                   :key="u.id"
-                  :id="u.id"
+                  :id="u.userId"
                 />
               </q-td>
+              <q-td key="clinicFee" align="right">
+                <q-badge color="positive">
+                  {{ props.row.clinicFee | money }}
+                </q-badge>
+              </q-td>
+              <q-td
+                align="left"
+                key="notes"
+                class="ellipsis"
+                style="max-width:200px"
+              >
+                {{ props.row.notes }}
+              </q-td>
+
               <!-- <q-td key="action" align="center ">
                 <q-btn
                   flat
@@ -147,7 +164,7 @@
               </q-td> -->
             </q-tr>
           </template>
-        </q-table>
+        </my-table>
       </q-card-section>
     </q-card>
   </q-expansion-item>
@@ -181,6 +198,7 @@ export default {
         sortBy: "visitDate",
         descending: true
       },
+      filter: undefined,
       columns: [
         {
           name: "actions",
@@ -232,6 +250,20 @@ export default {
           field: "vets",
           label: "Treated by",
           sortable: false
+        },
+        {
+          name: "clinicFee",
+          align: "right",
+          field: "clinicFee",
+          label: "Clinic Fee",
+          sortable: true
+        },
+        {
+          name: "notes",
+          align: "left",
+          field: "notes",
+          label: "Notes",
+          sortable: true
         }
         // {
         //   name: "action",
@@ -306,7 +338,7 @@ export default {
     },
     signalementUpdated(model) {
       this.data = this.data.map(x => (x.id === model.id ? model : x));
-      this.selected = model;
+      this.selected = Object.assign({}, model);
     },
     async onRequest() {
       if (this.patient.id === 0) {
@@ -326,10 +358,8 @@ export default {
             ? -1
             : 1
         );
-        console.log(data.map(x => x.id));
         if (data.length > 0) {
           this.selected = Object.assign({}, data[0]);
-          console.log("id", this.selected.id, data[0], data);
         } else {
           this.selected = {};
         }
