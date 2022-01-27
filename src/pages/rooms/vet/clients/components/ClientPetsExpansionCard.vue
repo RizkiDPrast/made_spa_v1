@@ -1,8 +1,14 @@
 <template>
-  <q-expansion-item v-bind="$attrs" v-model="expanded">
+  <q-expansion-item
+    v-bind="$attrs"
+    v-model="expanded"
+    class="shadow-4"
+    header-class="bg-primary text-white "
+    expand-icon-class="text-white"
+  >
     <template v-slot:header>
       <q-item-section avatar>
-        <q-avatar icon="las la-horse" text-color="primary" />
+        <q-avatar icon="las la-horse" />
       </q-item-section>
       <q-item-section>
         {{ petPanelTitle }}
@@ -23,6 +29,7 @@
             icon="las la-plus"
             round
             flat
+            class="text-white"
             :value="patient"
             :clientId="clientId"
             @input="newPetAdded"
@@ -56,9 +63,16 @@
               @click.native="selected = props.row"
             >
               <q-td key="actions" :props="props">
-                 <patient-to-boarding-btn :patientId="props.row.id" size="sm" round color="accent" flat />  
-                 
+                <patient-to-boarding-btn
+                  :patientId="props.row.id"
+                  size="sm"
+                  round
+                  color="accent"
+                  flat
+                />
+
                 <patient-btn
+                  :ref="`patient.${props.row.id}`"
                   @click.stop="selected = props.row"
                   icon="las la-pencil-alt"
                   round
@@ -96,6 +110,14 @@
               </q-td>
               <q-td key="doB" :props="props" class="">
                 {{ props.row.age }}
+              </q-td>
+              <q-td
+                key="notes"
+                :props="props"
+                class="ellipsis"
+                style="max-width:100px"
+              >
+                {{ props.row.notes }}
               </q-td>
             </q-tr>
           </template>
@@ -174,6 +196,14 @@ export default {
           label: "doB",
           sortable: false,
           style: "width:25px"
+        },
+        {
+          name: "notes",
+          align: "left",
+          field: "notes",
+          label: "Notes",
+          sortable: true,
+          format: (val, row) => val
         }
       ],
       pager: { rowsPerPage: 15 }

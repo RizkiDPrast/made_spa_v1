@@ -22,7 +22,7 @@
         <q-input
           :disable="loading"
           v-model="code"
-          label="Code (RM)"
+          label="Code"
           dense
           outlined
           clearable

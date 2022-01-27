@@ -6,7 +6,7 @@
       v-bind="$attrs"
       v-on="$listeners"
     >
-      <q-tooltip content-class="bg-secondary">
+      <q-tooltip content-class="bg-primary">
         Manage animal types
       </q-tooltip>
     </q-btn>

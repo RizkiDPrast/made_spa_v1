@@ -25,7 +25,8 @@ export default {
   data() {
     return {
       tab: "VisitsTab",
-      options: ["VisitsTab", "SalesTab", "ProfitsTab"]
+      options: ["VisitsTab"]
+      // options: ["VisitsTab", "SalesTab", "ProfitsTab"]
     };
   }
 };

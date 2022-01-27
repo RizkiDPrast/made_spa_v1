@@ -11,27 +11,27 @@ export default function() {
         icon: "las la-user-astronaut",
         class: "text-primary bg-white",
         style: "border-left:5px solid var(--q-color-primary)",
-        label: "Front Desk",
-        description: "Client, Queue, Sales and Purchase management"
+        label: "General",
+        description: "Client,patient,signalement and queue management"
       },
-      {
-        id: "r1",
-        room: true,
-        icon: "las la-user-nurse",
-        class: "text-accent bg-white",
-        style: "border-left:5px solid  var(--q-color-accent)",
-        label: "Exam Room 1",
-        description: "Patient examination, treatment / surgery "
-      },
-      {
-        id: "r2",
-        room: true,
-        icon: "las la-user-nurse",
-        class: "text-accent bg-white",
-        style: "border-left:5px solid  var(--q-color-accent)",
-        label: "Exam Room 2",
-        description: "Patient examination, treatment / surgery "
-      },
+      // {
+      //   id: "r1",
+      //   room: true,
+      //   icon: "las la-user-nurse",
+      //   class: "text-accent bg-white",
+      //   style: "border-left:5px solid  var(--q-color-accent)",
+      //   label: "Exam Room 1",
+      //   description: "Patient examination, treatment / surgery "
+      // },
+      // {
+      //   id: "r2",
+      //   room: true,
+      //   icon: "las la-user-nurse",
+      //   class: "text-accent bg-white",
+      //   style: "border-left:5px solid  var(--q-color-accent)",
+      //   label: "Exam Room 2",
+      //   description: "Patient examination, treatment / surgery "
+      // },
       {
         id: "general",
         room: false,
@@ -43,6 +43,6 @@ export default function() {
       }
     ],
     hubRoom: {},
-    inPatientCount: 0,
+    inPatientCount: 0
   };
 }

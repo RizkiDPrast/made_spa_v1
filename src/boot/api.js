@@ -79,8 +79,8 @@ export const api = {
     put(params) {
       return axios.put("clients", params);
     },
-    delete(params) {
-      return axios.delete("clients", params);
+    delete(id) {
+      return axios.delete(`clients/${id}`);
     },
     validateCode(code, id) {
       return axios.get("clients/validate/code", { params: { code, id } });
@@ -209,7 +209,36 @@ export const api = {
       return res;
     }
   },
-
+  totalSales: {
+    get: pager => {
+      return axios.get("/totalSales", { params: { pager } });
+    },
+    getOne: id => axios.get(`/totalSales/${id}`),
+    post: params => {
+      return axios.post("/totalSales", params);
+    },
+    put: params => {
+      return axios.put(`/totalSales/`, params);
+    },
+    delete: id => {
+      return axios.delete(`/totalSales/${id}`);
+    }
+  },
+  clinicFees: {
+    get: pager => {
+      return axios.get("/clinicFees", { params: { pager } });
+    },
+    getOne: id => axios.get(`/clinicFees/${id}`),
+    post: params => {
+      return axios.post("/clinicFees", params);
+    },
+    put: params => {
+      return axios.put(`/clinicFees/`, params);
+    },
+    delete: id => {
+      return axios.delete(`/clinicFees/${id}`);
+    }
+  },
   patients: {
     get: params => axios.get("/patients", { params }),
     getByClient: params => axios.get("/patients/byclient", { params }),

@@ -16,7 +16,7 @@
           Client details
         </q-toolbar-title>
         <BtnMoveClient v-model="onsite" class="q-mr-sm" />
-        <ItemUsageBtn
+        <!-- <ItemUsageBtn
           flat
           :clientId="model.id"
           v-if="model.id !== 0"
@@ -36,9 +36,9 @@
           round
           color="secondary"
           icon="las la-calendar-alt"
-        />
+        /> -->
       </q-toolbar>
-      <q-card-section>
+      <q-card-section :class="$q.screen.lt.md ? 'no-padding' : ''">
         <q-form
           autocomplete="off"
           class="row full-width q-col-gutter-xs"
@@ -55,7 +55,7 @@
                 ? 'auto'
                 : ''
             "
-            class="col-sm-12 col-md-2 q-my-sm q-py-xs"
+            class="col-xs-12 col-md-2 q-my-sm q-py-xs"
             v-model="model.code"
             debounce="500"
             type="text"
@@ -70,7 +70,7 @@
             autocomplete="off"
           />
           <q-input
-            class="col-sm-12 col-md-4 q-my-sm q-py-xs"
+            class="col-xs-12 col-md-4 q-my-sm q-py-xs"
             v-model="model.icNumber"
             debounce="500"
             type="text"
@@ -86,7 +86,7 @@
             autocomplete="off"
           />
           <q-input
-            class="col-sm-12 col-md-6 q-my-sm q-py-xs"
+            class="col-xs-12 col-md-6 q-my-sm q-py-xs"
             v-model="model.name"
             type="text"
             name="name"
@@ -101,7 +101,7 @@
             autocomplete="off"
           />
           <q-input
-            class="col-sm-12 col-md-12 q-my-sm q-py-xs"
+            class="col-xs-12 col-md-12 q-my-sm q-py-xs"
             v-model="model.address"
             type="textarea"
             name="address"
@@ -117,7 +117,7 @@
             rows="3"
           />
           <q-input
-            class="col-sm-12 col-md-4 q-my-sm q-py-xs"
+            class="col-xs-12 col-md-4 q-my-sm q-py-xs"
             v-model="model.waPhone"
             type="text"
             name="waPhone"
@@ -136,7 +136,7 @@
             </template>
           </q-input>
           <q-input
-            class="col-sm-12 col-md-4 q-my-sm q-py-xs"
+            class="col-xs-12 col-md-4 q-my-sm q-py-xs"
             v-model="model.otherPhones"
             type="text"
             name="otherPhones"
@@ -155,7 +155,7 @@
             </template>
           </q-input>
           <q-input
-            class="col-sm-12 col-md-4 q-my-sm q-py-xs"
+            class="col-xs-12 col-md-4 q-my-sm q-py-xs"
             v-model="model.email"
             type="text"
             name="email"
@@ -174,7 +174,7 @@
             </template>
           </q-input>
           <q-input
-            class="col-sm-12 col-md-12 q-my-sm q-py-xs"
+            class="col-xs-12 col-md-12 q-my-sm q-py-xs"
             v-model="model.notes"
             type="textarea"
             name="notes"
@@ -189,10 +189,9 @@
             rows="3"
           />
 
-          <div class="col-sm-12 text-right">
+          <div class="col-xs-12 text-right">
             <submit-button
-              color="white"
-              text-color="primary"
+              color="positive"
               :loading="loading"
               @click="saveClientDetails"
               class=""
@@ -242,7 +241,7 @@
       </div>
     </div>
 
-    <div class="row col-12 q-pt-lg" v-show="selectedPet && selectedPet.id">
+    <!-- <div class="row col-12 q-pt-lg" v-show="selectedPet && selectedPet.id">
       <q-toolbar class="bg-secondary text-white">
         <q-toolbar-title class="text-center">
           Consent forms and In-Patient's summaries
@@ -265,7 +264,7 @@
           <InPatientBoardList :patient="selectedPet" />
         </div>
       </div>
-    </div>
+    </div> -->
   </q-page>
 </template>
 
@@ -274,12 +273,12 @@ import Client from "src/models/Client";
 import ClientPetsExpansionCard from "./components/ClientPetsExpansionCard";
 import PetSignalementsExpansionCard from "./components/PetSignalementsExpansionCard";
 import PetSignalementsCard2 from "./components/PetSignalementsCard2";
-import ItemUsageBtn from "../components/ItemUsageBtn";
-import ConsentFormList from "./components/ConsentFormList";
 import ConsentFormDialog from "./components/ConsentFormDialog";
 import BtnMoveClient from "./components/BtnMoveClient";
-import InPatientBoardList from "./components/InPatientBoardList";
-import ClientAppointmentBtn from "../../components/ClientAppointmentBtn.vue";
+// import ItemUsageBtn from "../components/ItemUsageBtn";
+// import ConsentFormList from "./components/ConsentFormList";
+// import InPatientBoardList from "./components/InPatientBoardList";
+// import ClientAppointmentBtn from "../../components/ClientAppointmentBtn.vue";
 export default {
   name: "ClientDetails",
   props: {
@@ -296,12 +295,12 @@ export default {
     ClientPetsExpansionCard,
     PetSignalementsExpansionCard,
     PetSignalementsCard2,
-    ConsentFormList,
-    ConsentFormDialog,
-    BtnMoveClient,
-    InPatientBoardList,
-    ItemUsageBtn,
-    ClientAppointmentBtn
+    // ConsentFormList,
+    // ConsentFormDialog,
+    BtnMoveClient
+    // InPatientBoardList
+    // ItemUsageBtn,
+    // ClientAppointmentBtn
   },
   data() {
     return {
@@ -338,13 +337,13 @@ export default {
   watch: {},
   computed: {
     petContainerClass() {
-      return "col-sm-12 col-md-4";
+      return "col-xs-12 col-md-4";
       // return this.isAddingPetMode || this.isEditingPetMode > 0
       //   ? "col-xs-12 col-sm-12 col-md-8 col-lg-6 col-xl-6"
       //   : "col-xs-12 col-sm-12 col-md-4 col-lg-4";
     },
     visitSigContainerClass() {
-      return "col-sm-12 col-md-8";
+      return "col-xs-12 col-md-8";
       // return this.isAddingPetMode || this.isEditingPetMode > 0
       //   ? "col-xs-12 col-sm-12  col-md-4 col-lg-6 col-xl-6"
       //   : "col-xs-12 col-sm-12 col-md-8 col-lg-8";

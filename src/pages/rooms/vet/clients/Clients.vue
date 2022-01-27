@@ -22,7 +22,7 @@
         <q-input
           :disable="loading"
           v-model="code"
-          label="Code (RM)"
+          label="Code"
           dense
           outlined
           clearable
@@ -48,11 +48,17 @@
           @edit="edit"
           @delete="del"
         >
-         <q-btn round text-color="positive" size="sm" icon="las la-home" :to="`/app/rooms/client-pets/${props.row.id}`">
-          <q-tooltip content-class="bg-secondary">
-            Add to queue
-          </q-tooltip>
-        </q-btn>
+          <q-btn
+            round
+            text-color="positive"
+            size="sm"
+            icon="las la-home"
+            :to="`/app/rooms/client-pets/${props.row.id}`"
+          >
+            <q-tooltip content-class="bg-secondary">
+              Add to queue
+            </q-tooltip>
+          </q-btn>
         </td-action>
       </template>
       <template #body-cell-phone="props">
@@ -188,12 +194,11 @@ export default {
       this.$router.push({ path: `/app/rooms/vet/signalements/${id}` });
     },
     async del(id) {
-      console.log("delete", id);
       if (this.loading) return;
       this.loading = true;
 
       try {
-        var res = await this.clients.delete(id);
+        var res = await this.$api.clients.delete(id);
         if (res.status < 300) {
           this.data = this.data.filter(val => val.id !== id);
           this.$toastr.success("Record was deleted");

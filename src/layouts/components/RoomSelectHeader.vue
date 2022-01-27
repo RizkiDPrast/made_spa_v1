@@ -1,8 +1,33 @@
 <template>
   <q-header>
     <q-toolbar class="" :class="selected.class">
+      <!-- <q-toolbar-title class="text-center">
+        <q-card-section v-if="selected">
+          <div class="text-weight-bold text-uppercase text-h5">
+            <q-icon :class="selected.icon" /> {{ selected.label }}
+          </div>
+          <div class="text-black">
+            {{ selected.description }}
+          </div>
+        </q-card-section>
+      </q-toolbar-title> -->
+      <q-card-section
+        class="row flex-center text-center no-wrap overflow-ellipsis full-width"
+      >
+        <div v-if="selected">
+          <div class="text-weight-bold text-uppercase text-h5">
+            <q-icon :class="selected.icon" /> {{ selected.label }}
+          </div>
+          <div class="text-black">
+            {{ selected.description }}
+          </div>
+        </div>
+      </q-card-section>
+
+      <SwitchRoomButton v-if="false" />
+
       <user-avatar :value="auth" class="non-selectable cursor-pointer">
-        <q-menu :offset="[-50, -50]">
+        <q-menu :offset="[-35, 0]">
           <q-item>
             <q-item-section side>
               <user-avatar
@@ -46,30 +71,7 @@
         </q-menu>
       </user-avatar>
       <user-detail-dialog v-model="userDetailDialog" />
-      <!-- <q-toolbar-title class="text-center">
-        <q-card-section v-if="selected">
-          <div class="text-weight-bold text-uppercase text-h5">
-            <q-icon :class="selected.icon" /> {{ selected.label }}
-          </div>
-          <div class="text-black">
-            {{ selected.description }}
-          </div>
-        </q-card-section>
-      </q-toolbar-title> -->
-      <q-card-section
-        class="row flex-center text-center no-wrap overflow-ellipsis full-width"
-      >
-        <div v-if="selected">
-          <div class="text-weight-bold text-uppercase text-h5">
-            <q-icon :class="selected.icon" /> {{ selected.label }}
-          </div>
-          <div class="text-black">
-            {{ selected.description }}
-          </div>
-        </div>
-      </q-card-section>
 
-      <SwitchRoomButton />
       <!-- <q-card-section class="absolute-right">
         
       </q-card-section> -->

@@ -52,6 +52,10 @@ export default {
     this.$api.categories.get();
     this.$api.units.get();
 
+    if (this.$q.screen.lt.md) {
+      this.$store.commit("app/toggleMiniLeft", false);
+    }
+
     this.$store.commit(
       "app/selectedRoom",
       this.rooms.find(

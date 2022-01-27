@@ -23,16 +23,26 @@
           </template>
           <template #body-cell-blockUser="props">
             <q-td>
-              <q-btn flat round size="sm" icon="las la-lock" 
+              <q-btn
+                flat
+                round
+                size="sm"
+                icon="las la-lock"
                 v-if="props.row.lockoutEnabled && props.row.lockoutEnd != null"
                 @click="removeLockout(props.row.id)"
                 :loading="removingLockout"
                 color="negative"
               >
-              <q-tooltip content-class="bg-negative">
-                This user is being locked until {{$util.formatDate(props.row.lockoutEnd, 'DD MMMM YYYY HH:mm:ss  WIB')}}
-                <p> click to remove the lock out now </p> 
-              </q-tooltip>
+                <q-tooltip content-class="bg-negative">
+                  This user is being locked until
+                  {{
+                    $util.formatDate(
+                      props.row.lockoutEnd,
+                      "DD MMMM YYYY HH:mm:ss  WIB"
+                    )
+                  }}
+                  <p>click to remove the lock out now</p>
+                </q-tooltip>
               </q-btn>
               <q-badge
                 v-if="!props.row.blockUser"
@@ -275,28 +285,28 @@ export default {
           field: "phone",
           align: "left"
         },
+        // {
+        //   name: "Notes",
+        //   label: "Notes",
+        //   field: "notes",
+        //   align: "left"
+        // },
+        // {
+        //   name: "icnumber",
+        //   label: "IC",
+        //   field: "icNumber",
+        //   align: "left"
+        // },
+        // {
+        //   name: "address",
+        //   label: "Address",
+        //   field: "address",
+        //   align: "left"
+        // },
         {
-          name: "Notes",
-          label: "Notes",
-          field: "notes",
-          align: "left"
-        },
-        {
-          name: "icnumber",
-          label: "IC",
-          field: "icNumber",
-          align: "left"
-        },
-        {
-          name: "address",
-          label: "Address",
-          field: "address",
-          align: "left"
-        },
-        {
-          name: "modifiedat",
-          label: "Last Modified At",
-          field: "modifiedAt",
+          name: "lastActivityAt",
+          label: "Last Activity at",
+          field: "lastActivityAt",
           align: "left",
           format: val => this.$util.toDateString(val)
         }
@@ -315,22 +325,22 @@ export default {
     this.fetch();
   },
   methods: {
-    async removeLockout(id){
-      if(!id) return;
-      if(this.removingLockout) return;
-      this.removingLockout = true
+    async removeLockout(id) {
+      if (!id) return;
+      if (this.removingLockout) return;
+      this.removingLockout = true;
       try {
-        let res = await this.$api.users.removeLockout(id)
-        this.data = this.data.map(x =>{
-          if(x.id === id) {
-            x.lockoutEnd = null;          
+        let res = await this.$api.users.removeLockout(id);
+        this.data = this.data.map(x => {
+          if (x.id === id) {
+            x.lockoutEnd = null;
           }
-          return x
-        })
+          return x;
+        });
       } catch (error) {
-        this.$toatr.error(error)
+        this.$toatr.error(error);
       }
-      this.removingLockout = false
+      this.removingLockout = false;
     },
     async save() {
       if (!(await this.$validator.validate())) {

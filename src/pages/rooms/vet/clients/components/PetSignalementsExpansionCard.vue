@@ -1,8 +1,14 @@
 <template>
-  <q-expansion-item v-model="expanded" v-if="patient.id">
+  <q-expansion-item
+    v-model="expanded"
+    v-if="patient.id"
+    class="shadow-4"
+    header-class="bg-primary text-white "
+    expand-icon-class="text-white"
+  >
     <template v-slot:header>
       <q-item-section avatar>
-        <q-avatar icon="las la-calendar-week" text-color="primary" />
+        <q-avatar icon="las la-calendar-day" />
       </q-item-section>
       <q-item-section>
         <span v-html="signalementPanelTitle"></span>
@@ -14,6 +20,7 @@
             round
             flat
             icon="las la-plus"
+            class="text-white"
             :value="newModel"
             @input="signalementAdded"
           />
@@ -36,11 +43,9 @@
           <template #body="props">
             <q-tr
               :props="props"
-              :class="{
-                selected: props.row.id === selected.id
-              }"
               class="cursor-pointer"
-              @click.native="selected = Object.assign({}, props.row)"
+              :class="{ selected: props.row.id === selected.id }"
+              @click.native="selected = props.row"
             >
               <q-td key="actions" class="text-center">
                 <template
@@ -84,10 +89,14 @@
               <q-td key="pulse">
                 {{ props.row.pulse > 0 ? props.row.pulse + " bpm" : "-" }}
               </q-td>
-              <q-td key="treatedBy">
-                <user-badge :id="props.row.treatedBy" />
+              <q-td key="vets">
+                <user-badge
+                  v-for="u in props.row.vets"
+                  :key="u.id"
+                  :id="u.id"
+                />
               </q-td>
-              <q-td key="action" align="center ">
+              <!-- <q-td key="action" align="center ">
                 <q-btn
                   flat
                   dense
@@ -135,7 +144,7 @@
                 <q-badge class="bg-secondary">
                   {{ props.row.actionString }}
                 </q-badge>
-              </q-td>
+              </q-td> -->
             </q-tr>
           </template>
         </q-table>
@@ -218,19 +227,19 @@ export default {
           sortable: false
         },
         {
-          name: "treatedBy",
+          name: "vets",
           align: "center",
-          field: "treatedBy",
+          field: "vets",
           label: "Treated by",
           sortable: false
-        },
-        {
-          name: "action",
-          align: "center",
-          field: "actionString",
-          label: "Final action",
-          sortable: false
         }
+        // {
+        //   name: "action",
+        //   align: "center",
+        //   field: "actionString",
+        //   label: "Final action",
+        //   sortable: false
+        // }
       ],
       data: []
     };
@@ -363,7 +372,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 tr.selected td
-  background-color: #8080801;
+  background-color: #8080801a;
 .table {
   min-height:225px;
 }

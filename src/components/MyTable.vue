@@ -1,11 +1,49 @@
 <template>
   <div>
-    <q-toolbar class="q-mb-sm">
+    <q-toolbar :class="$q.screen.gt.sm ? 'q-mb-sm' : ''">
       <slot name="title">
         <q-toolbar-title v-if="!searchOnly">
           {{ title }}
         </q-toolbar-title>
       </slot>
+      <template v-if="$q.screen.gt.sm">
+        <slot name="actions"></slot>
+        <q-btn
+          :disable="loadingModel"
+          :class="addBtnClass"
+          v-if="!searchOnly"
+          :icon="addBtnIcon"
+          flat
+          round
+          @click="add"
+        />
+        <q-btn
+          :disable="loadingModel"
+          icon="las la-sync"
+          flat
+          round
+          @click="refresh"
+        />
+        <q-input
+          :class="{ 'full-width': searchOnly }"
+          v-model="filter"
+          type="text"
+          debounce="500"
+          @input="search"
+          clearable
+          borderless
+          placeholder="search..."
+          autofocus
+          :disable="loadingModel"
+        >
+          <template #after>
+            <q-icon name="las la-search" />
+          </template>
+        </q-input>
+      </template>
+    </q-toolbar>
+    <q-toolbar v-if="$q.screen.lt.md">
+      <q-toolbar-title> </q-toolbar-title>
       <slot name="actions"></slot>
       <q-btn
         :disable="loadingModel"
@@ -135,13 +173,13 @@ export default {
     search(filter) {
       // this.$refs.table.requestServerInteraction({ filter: k });
 
-      let pager = this.$refs.table.pagination || { page: 1, perPage: 10 };
+      let pager = this.$refs.table.pagination || { page: 1, rowsPerPage: 25 };
       pager.filter = this.filter;
       console.log("asd", pager);
       this.fetch({ pagination: pager });
     },
     refresh() {
-      let pager = this.$refs.table.pagination || { page: 1, perPage: 10 };
+      let pager = this.$refs.table.pagination || { page: 1, rowsPerPage: 25 };
       pager.filter = this.filter;
       this.$emit("refresh", { pagination: pager });
       this.fetch({ pagination: pager });

@@ -1,11 +1,10 @@
 <template>
-  <q-card class="q-mt-sm" :class="{ editing: isEditing }">
-    <q-toolbar>
-      <q-avatar icon="las la-book" text-color="primary" />
+  <q-card bordered class="q-mt-sm" :class="{ editing: isEditing }">
+    <q-toolbar class="bg-primary text-white">
+      <q-avatar icon="las la-book" />
 
-      <q-toolbar-title class="text-h6" style="font-size:18px;" v-html="title">
+      <q-toolbar-title style="font-size:14px;" v-html="title">
       </q-toolbar-title>
-
       <span v-show="model.id && model.id > 0">
         <template v-if="model.lockedAt && model.lockedAt !== null">
           <q-icon name="las la-lock" class="q-mr-md" />
@@ -14,21 +13,19 @@
           <q-btn
             flat
             round
-            text-color="primary"
             :icon="isEditing ? 'las la-undo' : 'las la-pencil-alt'"
             @click="toggleEdit"
           />
           <q-btn
             round
             flat
-            text-color="primary"
             v-show="isEditing"
             icon="las la-save"
             @click="save"
           />
         </template>
       </span>
-      <action-select
+      <!-- <action-select
         style="min-width:150px;"
         class="q-mt-md"
         v-model="model.action"
@@ -46,24 +43,26 @@
         <q-tooltip content-class="bg-secondary">
           One time update and only a veterinarian should update
         </q-tooltip>
-      </action-select>
+      </action-select> -->
     </q-toolbar>
     <span v-show="model.id && model.id > 0">
       <q-card-section class="row q-col-gutter-sm">
         <user-select
+          multiple
           stack-label
           label="Treated by"
           :roleNames="['Veterinarian']"
-          v-model="model.treatedBy"
+          v-model="model.vets"
           dense
           outlined
           class="col-6"
           :readonly="!isEditing"
         />
         <user-select
+          multiple
           stack-label
           label="Groomed by"
-          v-model="model.groomedBy"
+          v-model="model.groomers"
           dense
           outlined
           class="col-6"
@@ -219,12 +218,12 @@
 
 <script>
 import AddAttachmentBtn from "./AddAttachmentBtn";
-import ActionSelect from "./ActionSelect";
+// import ActionSelect from "./ActionSelect";
 export default {
   name: "PetSignalementsCard2",
   components: {
-    AddAttachmentBtn,
-    ActionSelect
+    AddAttachmentBtn
+    // ActionSelect
   },
   props: {
     value: {

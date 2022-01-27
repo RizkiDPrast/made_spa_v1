@@ -5,13 +5,13 @@
     </q-btn>
     <q-dialog v-model="modal" persistent>
       <q-card v-if="modal">
-        <q-toolbar class="bg-secondary text-white">
+        <q-toolbar class="bg-primary text-white">
           <q-toolbar-title>
             {{ model.id > 0 ? `Edit ${model.name}` : "Add new pet" }}
           </q-toolbar-title>
           <q-btn round flat icon="las la-times" v-close-popup />
         </q-toolbar>
-        <q-card-section style="width:500px;max-width:calc(100vw - 25px)">
+        <q-card-section style="width:500px;max-width:calc(100vw - 50px)">
           <q-scroll-area style="height:500px" class="full-width">
             <validation-summary
               :value="$store.state.errors"
@@ -23,9 +23,9 @@
                 v-if="
                   model.avatar && model.avatar != null && model.avatar.fileUri
                 "
-                class="full-width flex-center"
+                class="row full-width flex-center"
               >
-                <q-avatar>
+                <q-avatar size="100px">
                   <q-img :src="model.avatar.fileUri" />
                 </q-avatar>
               </div>
@@ -75,6 +75,19 @@
                 label="DoB"
               />
 
+              <q-input
+                v-model="model.notes"
+                name="notes"
+                class="q-mt-md"
+                v-validate="''"
+                :error="errors.has('notes')"
+                :error-message="errors.first('notes')"
+                outlined
+                label="Notes"
+                autocomplete="off"
+                autogrow
+              />
+
               <q-btn
                 :loading="loading"
                 icon="las la-save"
@@ -82,7 +95,7 @@
                 title="Save"
                 text-color="white"
                 class="full-width q-mt-xl"
-                color="secondary"
+                color="primary"
                 :disable="loading"
                 @click.stop="saveModel"
               />

@@ -5,13 +5,13 @@
     </q-btn>
     <q-dialog v-model="modal" persistent>
       <q-card>
-        <q-toolbar class="bg-secondary text-white">
+        <q-toolbar class="bg-primary text-white">
           <q-toolbar-title>
             {{ model.id > 0 ? `Edit visit data` : "Add visit data" }}
           </q-toolbar-title>
           <q-btn round flat icon="las la-times" v-close-popup />
         </q-toolbar>
-        <q-card-section style="width:500px;max-width:calc(100vw - 25px)">
+        <q-card-section style="width:500px;max-width:calc(100vw - 50px)">
           <validation-summary
             :value="$store.state.errors"
             @input="$store.commit('clearErrors')"
@@ -82,7 +82,7 @@
                   class="col-6"
                 />
 
-                <user-select
+                <!-- <user-select
                   readonly
                   label="Treated by"
                   :roleNames="['veterinarian']"
@@ -92,7 +92,7 @@
                   outlined
                   class="col-12"
                   hint="Please input from medical record"
-                />
+                /> -->
               </div>
             </q-scroll-area>
 
@@ -103,7 +103,7 @@
               title="Save"
               text-color="white"
               class="full-width q-mt-xl"
-              color="secondary"
+              color="primary"
               :disable="loading"
               @click.stop="saveModel"
             />

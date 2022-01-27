@@ -14,7 +14,7 @@
         Client and Pets
       </div>
       <div class="row q-col-gutter-md">
-        <div class="col-sm-12 col-md-7 q-pa-sm">
+        <div class="col-xs-12 col-md-7 q-pa-sm">
           <q-card>
             <q-toolbar class="q-pa-sm">
               <q-toolbar-title>
@@ -38,7 +38,7 @@
                       ? 'auto'
                       : ''
                   "
-                  class="col-sm-12 col-md-2 q-my-sm q-py-xs"
+                  class="col-xs-12 col-md-2 q-my-sm q-py-xs"
                   v-model="model.code"
                   debounce="500"
                   type="text"
@@ -53,7 +53,7 @@
                   autocomplete="off"
                 />
                 <q-input
-                  class="col-sm-12 col-md-4 q-my-sm q-py-xs"
+                  class="col-xs-12 col-md-4 q-my-sm q-py-xs"
                   v-model="model.icNumber"
                   debounce="500"
                   type="text"
@@ -69,7 +69,7 @@
                   autocomplete="off"
                 />
                 <q-input
-                  class="col-sm-12 col-md-6 q-my-sm q-py-xs"
+                  class="col-xs-12 col-md-6 q-my-sm q-py-xs"
                   v-model="model.name"
                   type="text"
                   name="name"
@@ -84,7 +84,7 @@
                   autocomplete="off"
                 />
                 <q-input
-                  class="col-sm-12 col-md-12 q-my-sm q-py-xs"
+                  class="col-xs-12 col-md-12 q-my-sm q-py-xs"
                   v-model="model.address"
                   type="textarea"
                   name="address"
@@ -100,7 +100,7 @@
                   rows="3"
                 />
                 <q-input
-                  class="col-sm-12 col-md-4 q-my-sm q-py-xs"
+                  class="col-xs-12 col-md-4 q-my-sm q-py-xs"
                   v-model="model.waPhone"
                   type="text"
                   name="waPhone"
@@ -119,7 +119,7 @@
                   </template>
                 </q-input>
                 <q-input
-                  class="col-sm-12 col-md-4 q-my-sm q-py-xs"
+                  class="col-xs-12 col-md-4 q-my-sm q-py-xs"
                   v-model="model.otherPhones"
                   type="text"
                   name="otherPhones"
@@ -138,7 +138,7 @@
                   </template>
                 </q-input>
                 <q-input
-                  class="col-sm-12 col-md-4 q-my-sm q-py-xs"
+                  class="col-xs-12 col-md-4 q-my-sm q-py-xs"
                   v-model="model.email"
                   type="text"
                   name="email"
@@ -157,7 +157,7 @@
                   </template>
                 </q-input>
                 <q-input
-                  class="col-sm-12 col-md-12 q-my-sm q-py-xs"
+                  class="col-xs-12 col-md-12 q-my-sm q-py-xs"
                   v-model="model.notes"
                   type="textarea"
                   name="notes"
@@ -225,7 +225,7 @@
         </div>
 
         <PetsBrought
-          class="col-sm-12 col-md-5 q-pa-sm"
+          class="col-xs-12 col-md-5 q-pa-sm"
           :client="model"
           v-show="model.id"
           :selected-pets.sync="selectedPets"
@@ -299,7 +299,7 @@ export default {
       try {
         var res = await this.$api.clients.getOne(this.id);
         if (res.status < 300) {
-          this.model = this.client = new Client(res.data);
+          this.model = new Client(res.data);
         } else {
           this.$toastr.error("Unable to fetch client's records");
           this.$router.back();
@@ -322,7 +322,7 @@ export default {
         let isAdding = !this.model.id || this.model.id === 0;
         var res = await (isAdding
           ? this.$api.clients.post(this.model)
-          : this.$api.clients.put(this.model.id, this.model));
+          : this.$api.clients.put(this.model));
         if (res.status < 300) {
           this.$toastr.success(
             `${isAdding ? "Record added" : "Record updated"}`
@@ -351,11 +351,11 @@ export default {
             this.selectedPets.map(x => x.id)
           );
         } else {
-          await this.$api.onSites.postByClient(this.client.id);
+          await this.$api.onSites.postByClient(this.model.id);
         }
         this.$toastr.success("Visitor was added");
-        // this.$router.replace("/app/rooms/on-sites");
-        this.$router.replace(`/app/rooms/vet/signalements/${this.model.id}`);
+        this.$router.replace("/app/rooms/on-sites");
+        // this.$router.replace(`/app/rooms/vet/signalements/${this.model.id}`);
       } catch (e) {
         this.$toastr.error(e);
       }

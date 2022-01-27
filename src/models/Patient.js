@@ -14,6 +14,8 @@ export default class Patient extends UserTracker {
     visitingToday,
     client,
     avatar,
+    notes,
+
     ...params
   } = {}) {
     super(params);
@@ -30,6 +32,7 @@ export default class Patient extends UserTracker {
     this.visitingToday = visitingToday;
     this.client = client;
     this.avatar = avatar;
+    this.notes = notes;
   }
 
   get doBString() {

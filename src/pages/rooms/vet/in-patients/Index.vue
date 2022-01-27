@@ -14,7 +14,11 @@
         />
       </q-toolbar>
       <div class="row">
-        <div class="col-4 q-pa-sm" v-for="item in dataModel" :key="item.label">
+        <div
+          class="col-xs-12 col-md-4 q-pa-sm"
+          v-for="item in dataModel"
+          :key="item.label"
+        >
           <q-card>
             <q-toolbar>
               <q-toolbar-title>

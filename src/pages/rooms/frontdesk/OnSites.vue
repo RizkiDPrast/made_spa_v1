@@ -15,7 +15,7 @@
       </q-toolbar>
       <div class="row">
         <div
-          class="col-4 q-pa-sm"
+          class="col-sm-12 col-md-4 q-pa-sm"
           v-for="item in rooms.filter(x => x.room)"
           :key="item.id"
         >
@@ -23,7 +23,7 @@
             <q-toolbar>
               <q-toolbar-title>
                 {{ item.label }}
-                <q-item-label caption>
+                <q-item-label caption class="full-width overflow-ellipsis">
                   {{ item.description }}
                 </q-item-label>
               </q-toolbar-title>
@@ -105,9 +105,10 @@
                 </q-item-section>
                 <q-item-section>
                   <q-item-label>
-                    <q-badge v-if="data && data !== null && data.length">{{
-                      data.indexOf(model) + 1
-                    }}</q-badge>
+                    <q-badge
+                      v-if="model.queueNumber && model.queueNumber !== null"
+                      >{{ model.queueNumber }}</q-badge
+                    >
                     - {{ model.client.code }} - {{ model.client.name }}
                   </q-item-label>
                   <q-item-label caption>
