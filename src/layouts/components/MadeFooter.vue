@@ -1,14 +1,12 @@
 <template>
   <q-footer>
-    <q-toolbar class="bg-white text-grey-6 q-px-md q-py-md">
+    <q-toolbar class="bg-primary text-white q-px-md q-py-md">
+      <div class="bg-secondary">
+        <q-img src="/images/logo_made_md.png" style="width:150px;" />
+      </div>
       <q-toolbar-title>
         <q-item>
-          <q-item-section avatar>
-            <q-img
-              src="/images/logo_made_md.png"
-              style="height:80px;width:8  0px;"
-            />
-          </q-item-section>
+          <q-item-section avatar> </q-item-section>
           <q-item-section title>
             <div class="text-h6">M.A.D.E Pet Care and Clinic</div>
             <div class="text-caption">
