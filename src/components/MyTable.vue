@@ -25,6 +25,7 @@
           @click="refresh"
         />
         <q-input
+          ref="searchInput"
           :class="{ 'full-width': searchOnly }"
           v-model="filter"
           type="text"
@@ -175,7 +176,6 @@ export default {
 
       let pager = this.$refs.table.pagination || { page: 1, rowsPerPage: 25 };
       pager.filter = this.filter;
-      console.log("asd", pager);
       this.fetch({ pagination: pager });
     },
     refresh() {
@@ -186,6 +186,16 @@ export default {
     },
     fetch(props) {
       this.$emit("request", props);
+      const self = this;
+      setTimeout(() => {
+        self.$refs.searchInput.$el.focus();
+      }, 500);
+
+      // BUG: set focus on QInput
+      // this.$nextTick(() => {
+      //   self.$refs.searchInput.$el.focus();
+      // });
+      console.log("this.$refs.searchInput", this.$refs.searchInput);
     }
   }
 };
