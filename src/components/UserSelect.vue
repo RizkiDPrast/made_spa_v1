@@ -1,13 +1,15 @@
 <template>
   <q-select
     v-model="selected"
-    :options="data"
+    :options="dataModel"
     :loading="loading"
     @input="inputFn"
     :outlined="outlined"
     v-bind="$attrs"
     clearable
     :use-chips="multiple"
+    use-input
+    @filter="filterFn"
   />
 </template>
 
@@ -33,13 +35,37 @@ export default {
     return {
       data: [],
       selected: undefined,
-      loading: false
+      loading: false,
+      filter: undefined
     };
   },
   computed: {
     multiple() {
       if (!this.$attrs) return false;
       return this.$attrs.multiple === "" ? true : this.$attrs.multiple || false;
+    },
+    dataModel() {
+      let dt = this.data
+        .map(x => x)
+        .sort((a, b) => {
+          // const na =
+          //   a.displayName && a.displayName !== null
+          //     ? a.displayName
+          //     : a.userName;
+          // const nb =
+          //   b.displayName && b.displayName !== null
+          //     ? b.displayName
+          //     : b.userName;
+          return a.label > b.label ? 1 : 0;
+        });
+      if (!this.filter) {
+        return dt;
+      }
+      let val = this.filter.toLowerCase();
+      return dt.filter(x => {
+        // const nx = x.displayName && x.displayName !== null ? x.displayName : x.userName;
+        return x.label.toLowerCase().indexOf(val) > -1;
+      });
     }
   },
   mounted() {
@@ -111,7 +137,11 @@ export default {
     inputFn(val) {
       this.$emit("input", this.multiple ? val : val?.value);
       this.$emit("selected", this.selected);
-
+    },
+    filterFn(val, update, abort) {
+      update(() => {
+        this.filter = val;
+      });
     }
   }
 };

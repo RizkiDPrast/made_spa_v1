@@ -3,7 +3,7 @@
     <RoomSelectHeader ref="rselect"> </RoomSelectHeader>
     <q-page-container class="screen-height">
       <transition appear enter-active-class="animated fadeIn">
-        <router-view :key="new Date().getMilliseconds()" />
+        <router-view class="no-padding" :key="new Date().getMilliseconds()" />
       </transition>
     </q-page-container>
 

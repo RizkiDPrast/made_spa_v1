@@ -41,3 +41,8 @@ body {
 .q-tooltip.q-tooltip--style.q-position-engine.no-pointer-events {
   z-index: 6000;
 }
+
+main.page {
+  border-radius: 25px;
+  background-color: $grey-4;
+}

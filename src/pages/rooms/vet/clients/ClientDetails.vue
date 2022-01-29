@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page padding class="bg-grey-4 " style="border-radius:25px;">
     <page-header title="Client details and signalements">
       <template #actions>
         <animal-types-btn flat round />
@@ -9,7 +9,7 @@
       <my-circular-progress />
     </div>
 
-    <q-card v-else class="bordered no-shadow q-mt-md">
+    <q-card v-else class="bordered  q-mt-md">
       <q-toolbar flat>
         <q-btn icon="las la-arrow-left" dense flat @click="$router.back()" />
         <q-toolbar-title>

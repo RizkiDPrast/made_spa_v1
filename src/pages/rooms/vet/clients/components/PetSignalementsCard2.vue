@@ -13,7 +13,7 @@
           <q-btn
             flat
             round
-            :icon="isEditing ? 'las la-undo' : 'las la-pencil-alt'"
+            :icon="isEditing ? 'las la-undo' : 'las la-lock'"
             @click="toggleEdit"
           />
           <q-btn
@@ -159,6 +159,25 @@
               type="textarea"
               rows="2"
             />
+          </div>
+
+          <div class="col-12">
+            <money-field
+              v-model="model.clinicFee"
+              dense
+              outlined
+              class="col-xs-12 col-md-12"
+              label-slot
+            >
+              <template #label>
+                <q-badge
+                  style="font-size: 1.2em;padding: 8px;"
+                  color="positive"
+                >
+                  Clinic Fee
+                </q-badge>
+              </template>
+            </money-field>
           </div>
 
           <div class="col-12 row full-width q-mt">
