@@ -120,9 +120,9 @@
                       <q-item-label caption>
                         {{ $util.toDateString(model.createdAt) }}
                       </q-item-label>
-                      <q-item-label caption>
+                      <!-- <q-item-label caption>
                         remark: {{ model.remark || "-" }}
-                      </q-item-label>
+                      </q-item-label> -->
                       <q-item-label
                         v-if="
                           model.patients &&
