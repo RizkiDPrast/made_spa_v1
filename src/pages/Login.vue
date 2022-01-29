@@ -14,7 +14,10 @@
         class="my-card col-4 col-xs-10"
         style="max-width:400px;"
       >
-        <q-toolbar class="q-pb-md bg-white">
+        <q-toolbar
+          class="q-pb-md"
+          style="background-image: linear-gradient(81deg, hsl(52deg 71% 46%), #000000 40%)"
+        >
           <q-avatar size="6em">
             <img src="/favicon.png" />
           </q-avatar>
@@ -27,7 +30,7 @@
 
             <span class="letters-sub-logo">
               <span class="text-positive">Pets </span>
-              <span class="text-accent">Care</span>
+              <span class="text-primary">Care</span>
             </span>
           </q-toolbar-title>
         </q-toolbar>
@@ -53,24 +56,34 @@
             <q-input
               v-model="name"
               v-validate="'required'"
-              filled
+              outlined
+              rounded
               label="Username *"
               name="username"
               hint=""
               :error="errors.has('username')"
               :error-message="errors.first('username')"
-            />
+            >
+              <template #prepend>
+                <q-icon name="las la-user-tie" />
+              </template>
+            </q-input>
 
             <q-input
               v-model="password"
               v-validate="'required'"
-              filled
+              outlined
+              rounded
               type="password"
               label="Password *"
               name="password"
               :error="errors.has('password')"
               :error-message="errors.first('password')"
-            />
+            >
+              <template #prepend>
+                <q-icon name="las la-key" />
+              </template>
+            </q-input>
 
             <div class="text-left" style="margin-top:0">
               <q-checkbox
