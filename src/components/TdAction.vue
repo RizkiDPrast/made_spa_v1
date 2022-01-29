@@ -3,7 +3,7 @@
     <slot> </slot>
     <q-btn
       text-color="primary"
-      icon="las la-pen-alt"
+      :icon="editBtnIcon"
       round
       size="sm"
       @click="edit"
@@ -45,6 +45,10 @@ export default {
     editBtnClass: {
       type: String,
       default: () => ""
+    },
+    editBtnIcon: {
+      type: String,
+      default: () => "las la-pen-alt"
     }
   },
   methods: {

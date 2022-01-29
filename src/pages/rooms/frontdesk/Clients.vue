@@ -17,6 +17,7 @@
       @delete="del"
       @add="add"
       @edit="edit"
+      editBtnIcon="las la-plus"
     >
       <template #actions>
         <q-input

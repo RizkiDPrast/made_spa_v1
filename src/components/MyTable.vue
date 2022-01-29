@@ -109,6 +109,7 @@
           @delete="del"
           :editBtnClass="editBtnClass"
           :deleteBtnClass="deleteBtnClass"
+          :editBtnIcon="editBtnIcon"
         />
       </template>
 
@@ -145,6 +146,10 @@ export default {
     editBtnClass: {
       type: String,
       default: () => ""
+    },
+    editBtnIcon: {
+      type: String,
+      default: () => "las la-pen-alt"
     }
   },
   data() {
