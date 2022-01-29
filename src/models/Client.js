@@ -9,8 +9,11 @@ export default class Client {
     otherPhones,
     email,
     notes,
+    totalPets,
+    totalSales,
     createdAt,
-    modifiedAt
+    modifiedAt,
+    patients = []
   } = {}) {
     this.id = id;
     this.code = code;
@@ -21,7 +24,11 @@ export default class Client {
     this.otherPhones = otherPhones;
     this.email = email;
     this.notes = notes;
+    this.totalPets = totalPets;
+    this.totalSales = totalSales;
     this.createdAt = createdAt;
     this.modifiedAt = modifiedAt;
+
+    this.patients = patients;
   }
 }

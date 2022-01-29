@@ -210,8 +210,8 @@ export const api = {
     }
   },
   totalSales: {
-    get: pager => {
-      return axios.get("/totalSales", { params: { pager } });
+    get: params => {
+      return axios.get("/totalSales", { params });
     },
     getOne: id => axios.get(`/totalSales/${id}`),
     post: params => {
@@ -225,8 +225,8 @@ export const api = {
     }
   },
   clinicFees: {
-    get: pager => {
-      return axios.get("/clinicFees", { params: { pager } });
+    get: params => {
+      return axios.get("/clinicFees", { params });
     },
     getOne: id => axios.get(`/clinicFees/${id}`),
     post: params => {

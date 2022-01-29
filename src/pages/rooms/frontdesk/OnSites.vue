@@ -31,7 +31,7 @@
                 v-if="item.id.indexOf('fd') === 0 && imHere(item.id)"
                 rounded
                 icon="las la-plus"
-                @click="$router.push('/app/rooms/clients')"
+                @click="$router.push('/app/rooms/vet/clients')"
                 :disable="loading"
                 label="Add Visitor"
                 color="primary"

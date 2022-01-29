@@ -53,13 +53,14 @@ const routes = [
               title: "Queue Management"
             }
           },
-          {
-            path: "clients",
-            component: () => import("pages/rooms/frontdesk/Clients.vue"),
-            meta: {
-              title: "Client Management"
-            }
-          },
+          //todo remove following page
+          // {
+          //   path: "clients",
+          //   component: () => import("pages/rooms/frontdesk/Clients.vue"),
+          //   meta: {
+          //     title: "Client Management"
+          //   }
+          // },
           {
             path: "client-pets/:id?",
             component: () => import("pages/rooms/frontdesk/ClientDetails.vue"),

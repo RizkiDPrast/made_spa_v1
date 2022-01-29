@@ -33,7 +33,7 @@
         <q-menu>
           <q-list dense>
             <slot name="mobile"> </slot>
-            <q-item>
+            <q-item v-close-popup>
               <q-btn
                 text-color="primary"
                 :icon="editBtnIcon"
@@ -44,7 +44,7 @@
                 label="Edit"
               ></q-btn>
             </q-item>
-            <q-item>
+            <q-item v-close-popup>
               <q-btn
                 text-color="negative"
                 icon="las la-trash"

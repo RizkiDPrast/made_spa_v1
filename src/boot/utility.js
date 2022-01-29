@@ -118,10 +118,10 @@ export const utility = {
         typeof e.response.data === "string" &&
         e.response.data.length
       ) {
-        msg = e.response.data.substr(0,100);
-        
-        if(e.response.data.length > 100){
-          msg += '...'
+        msg = e.response.data.substr(0, 100);
+
+        if (e.response.data.length > 100) {
+          msg += "...";
         }
       } else {
         if (outputArray) {

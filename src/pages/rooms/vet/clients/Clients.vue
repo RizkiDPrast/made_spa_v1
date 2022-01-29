@@ -19,15 +19,116 @@
       @edit="edit"
     >
       <template #actions>
-        <q-input
-          :disable="loading"
-          v-model="code"
-          label="Code"
-          dense
-          outlined
-          clearable
-          debounce="500"
-        />
+        <template v-if="$q.screen.gt.sm">
+          <q-input
+            :disable="loading"
+            v-model="code"
+            label="Code"
+            dense
+            outlined
+            clearable
+            debounce="1000"
+          />
+          <animal-type-select
+            dense
+            outlined
+            label="Pet's type"
+            v-model="animalTypeId"
+          />
+          <q-input
+            :disable="loading"
+            v-model="petName"
+            label="Pet name"
+            dense
+            outlined
+            clearable
+            debounce="1000"
+          />
+        </template>
+        <template v-else>
+          <q-btn
+            icon="las la-filter"
+            :color="code || animalTypeId || petName ? 'negative' : ''"
+            flat
+            round
+            @click="filterDialog = true"
+          />
+
+          <q-dialog v-model="filterDialog">
+            <q-card>
+              <dialog-header title="Filter clients by" />
+              <q-card-section>
+                <q-badge color="warning" v-if="code && code !== null" outline>
+                  Code: {{ code }}
+                  <q-btn
+                    round
+                    flat
+                    size="sm"
+                    icon="las la-times"
+                    @click="code = null"
+                  />
+                </q-badge>
+                <q-badge
+                  color="info"
+                  v-if="animalTypeId && animalTypeId !== null"
+                  outline
+                >
+                  Pet's type: {{ getAnimalTypeName(animalTypeId) }}
+                  <q-btn
+                    size="sm"
+                    round
+                    flat
+                    icon="las la-times"
+                    @click="animalTypeId = null"
+                  />
+                </q-badge>
+                <q-badge
+                  color="positive"
+                  v-if="petName && petName !== null"
+                  outline
+                >
+                  Pet's name: {{ petName }}
+                  <q-btn
+                    round
+                    flat
+                    size="sm"
+                    icon="las la-times"
+                    @click="petName = null"
+                  />
+                </q-badge>
+              </q-card-section>
+              <q-card-section class="row q-col-gutter-sm">
+                <q-input
+                  class="col-12"
+                  :disable="loading"
+                  v-model="code"
+                  label="Code"
+                  dense
+                  outlined
+                  clearable
+                  debounce="1000"
+                />
+                <animal-type-select
+                  class="col-12"
+                  dense
+                  outlined
+                  label="Pet's type"
+                  v-model="animalTypeId"
+                />
+                <q-input
+                  class="col-12"
+                  :disable="loading"
+                  v-model="petName"
+                  label="Pet name"
+                  dense
+                  outlined
+                  clearable
+                  debounce="1000"
+                />
+              </q-card-section>
+            </q-card>
+          </q-dialog>
+        </template>
       </template>
       <template #body-cell-email="props">
         <q-td>
@@ -48,17 +149,48 @@
           @edit="edit"
           @delete="del"
         >
-          <q-btn
-            round
-            text-color="positive"
-            size="sm"
-            icon="las la-home"
-            :to="`/app/rooms/client-pets/${props.row.id}`"
-          >
-            <q-tooltip content-class="bg-secondary">
-              Add to queue
-            </q-tooltip>
-          </q-btn>
+          <template v-if="$q.screen.gt.sm" #default>
+            <q-btn
+              round
+              text-color="warning"
+              size="sm"
+              icon="las la-plus"
+              :to="`/app/rooms/client-pets/${props.row.id}`"
+            >
+              <q-tooltip content-class="bg-secondary">
+                Add as today visitor
+              </q-tooltip>
+            </q-btn>
+
+            <client-total-sales-btn
+              :client="props.row"
+              round
+              size="sm"
+              text-color="positive"
+            />
+          </template>
+          <template v-else #mobile>
+            <q-item v-close-popup>
+              <q-btn
+                text-color="warning"
+                size="sm"
+                icon="las la-plus"
+                :to="`/app/rooms/client-pets/${props.row.id}`"
+                label="Add as today visitor"
+                flat
+              >
+              </q-btn>
+            </q-item>
+            <q-item>
+              <client-total-sales-btn
+                :client="props.row"
+                size="sm"
+                flat
+                text-color="positive"
+                label="Manage Client Total Sales"
+              />
+            </q-item>
+          </template>
         </td-action>
       </template>
       <template #body-cell-phone="props">
@@ -78,7 +210,15 @@
 
 <script>
 import Client from "src/models/Client";
+import ClientTotalSalesBtn from "components/buttons/ClientTotalSalesBtn.vue";
+import AnimalTypeSelect from "src/components/AnimalTypeSelect.vue";
+import DialogHeader from "src/components/DialogHeader.vue";
 export default {
+  components: {
+    ClientTotalSalesBtn,
+    AnimalTypeSelect,
+    DialogHeader
+  },
   data() {
     return {
       loading: false,
@@ -88,7 +228,7 @@ export default {
           name: "action",
           label: "action",
           field: "action",
-          width: "25px",
+          width: "100px",
           align: "center"
         },
         {
@@ -134,20 +274,68 @@ export default {
           align: "left"
         },
         {
+          name: "totalsales",
+          label: "Total Sales",
+          field: "totalSales",
+          align: "right",
+          format: val => this.$options.filters.money(val)
+        },
+        {
+          name: "totalpets",
+          label: "Count of Pets",
+          field: "totalPets",
+          align: "right",
+          format: val => val
+        },
+        {
+          name: "pets",
+          label: "Pets",
+          field: "patients",
+          align: "left",
+          style: "max-width: 100px;white-space: break-spaces;min-width: 80px;",
+          format: val => {
+            if (val && val !== null && val.length) {
+              var pets = val
+                .map(x => `${this.getAnimalTypeName(x.animalTypeId)} ${x.name}`)
+                .join(", ");
+              return pets;
+            }
+          }
+        },
+        {
+          name: "createdat",
+          label: "Created At",
+          field: "createdAt",
+          align: "left",
+          format: val => this.$util.toDateString(val)
+        },
+        {
           name: "modifiedat",
           label: "Last Modified At",
           field: "modifiedAt",
           align: "left",
           format: val => this.$util.toDateString(val)
+        },
+        {
+          name: "id",
+          label: "ID",
+          field: "id",
+          align: "right",
+          format: val => val
         }
       ],
       pager: {
         page: 1,
+        orderBy: "modifiedat",
+        descending: true,
         rowsPerPage: 25,
         rowsNumber: 0
       },
       filter: undefined,
-      code: null
+      code: null,
+      animalTypeId: null,
+      petName: null,
+      filterDialog: false
     };
   },
   mounted() {
@@ -155,6 +343,12 @@ export default {
   },
   watch: {
     code() {
+      this.fetch();
+    },
+    petName() {
+      this.fetch();
+    },
+    animalTypeId() {
       this.fetch();
     }
   },
@@ -165,6 +359,9 @@ export default {
       pager = pager?.pagination || this.pager;
 
       pager.code = this.code;
+      pager.petName = this.petName;
+      pager.animalTypeId = this.animalTypeId;
+
       try {
         var res = await this.$api.clients.get(pager);
         var dt = res.data;
