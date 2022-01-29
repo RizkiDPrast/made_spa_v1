@@ -15,7 +15,7 @@
       </q-toolbar>
       <div class="row">
         <div
-          class="col-sm-12 col-md-4 q-pa-sm"
+          class="col-12 q-pa-sm"
           v-for="item in rooms.filter(x => x.room)"
           :key="item.id"
         >
@@ -29,171 +29,178 @@
               </q-toolbar-title>
               <q-btn
                 v-if="item.id.indexOf('fd') === 0 && imHere(item.id)"
-                flat
-                round
-                dense
+                rounded
                 icon="las la-plus"
                 @click="$router.push('/app/rooms/clients')"
                 :disable="loading"
+                label="Add Visitor"
+                color="primary"
               >
                 <q-tooltip>
                   Add visitor
                 </q-tooltip>
               </q-btn>
             </q-toolbar>
-            <q-list bordered style="min-height:50px;">
-              <q-item v-for="model in roomData(item.id)" :key="model.id">
-                <q-item-section avatar top class="q-pr-xs">
-                  <q-btn flat round icon="las la-user-tie">
-                    <q-menu anchor="top right">
-                      <q-list class="">
-                        <q-item
-                          clickable
-                          :to="`/app/rooms/sales/client/${model.client.id}`"
-                        >
-                          <q-item-section>
-                            <q-item-label>Create receipt</q-item-label>
-                          </q-item-section>
-                          <q-item-section avatar>
-                            <q-icon name="las la-cash-register" />
-                          </q-item-section>
-                        </q-item>
-
-                        <q-item
-                          clickable
-                          :to="
-                            `/app/rooms/client-pets/${model.client.id}?date=${model.createdAt}`
-                          "
-                        >
-                          <q-item-section>
-                            <q-item-label>Queue details</q-item-label>
-                            <q-item-label caption lines="2"
-                              >update visitor details or pet's
-                              brought</q-item-label
-                            >
-                          </q-item-section>
-                        </q-item>
-                        <q-item
-                          clickable
-                          :to="`vet/signalements/${model.client.id}`"
-                        >
-                          <q-item-section>
-                            <q-item-label>Signalement</q-item-label>
-                            <q-item-label caption lines="2"
-                              >update visit date, clinical sign /
-                              anamnesis</q-item-label
-                            >
-                          </q-item-section>
-                        </q-item>
-                      </q-list>
-                    </q-menu>
-                  </q-btn>
-                  <div style="margin-top:-12px;margin-left:-3px;">
-                    <wa-btn
-                      v-if="model.client.waPhone"
-                      :value="model.client.waPhone"
-                      :disable="loading"
-                      size="sm"
-                    />
-                    <email-btn
-                      v-if="model.client.email"
-                      :value="model.client.email"
-                      :disable="loading"
-                      size="sm"
-                    />
-                  </div>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>
-                    <q-badge
-                      v-if="model.queueNumber && model.queueNumber !== null"
-                      >{{ model.queueNumber }}</q-badge
-                    >
-                    - {{ model.client.code }} - {{ model.client.name }}
-                  </q-item-label>
-                  <q-item-label caption>
-                    remark: {{ model.remark || "-" }}
-                  </q-item-label>
-                  <q-item-label
-                    v-if="
-                      model.patients &&
-                        model.patients !== null &&
-                        model.patients.length
-                    "
-                    class="q-gutter-xs"
-                  >
-                    <q-badge
-                      v-for="p in model.patients"
-                      :key="p.id"
-                      color="grey-3"
-                      text-color="black"
-                    >
-                      <patient-to-boarding-btn
-                        :patientId="p.id"
-                        size="sm"
-                        round
-                        color="accent"
-                        flat
-                      />
-                      {{ getAnimalTypeName(p.animalTypeId) }} {{ p.name }}
-                    </q-badge>
-                  </q-item-label>
-                </q-item-section>
-                <q-item-section side top>
-                  <div>
-                    <q-btn
-                      flat
-                      round
-                      :disable="loading"
-                      icon="las la-times"
-                      @click="del(model.id)"
-                      v-if="imHere(item.id)"
-                      size="sm"
-                    />
-                    <q-btn
-                      flat
-                      round
-                      text-color="primary"
-                      icon="las la-ellipsis-v"
-                      :disable="loading"
-                      v-if="imHere(item.id)"
-                      size="sm"
-                    >
-                      <q-menu>
-                        <!-- <q-toolbar class="bg-grey-3">
-                          <q-toolbar-title>
-                            Move to:
-                          </q-toolbar-title>
-                        </q-toolbar> -->
-                        <q-list>
+            <q-card-section class="row full-width q-gutter-sm">
+              <q-card
+                v-for="model in roomData(item.id)"
+                :key="model.id"
+                class="col-4"
+                bordered
+              >
+                <q-item>
+                  <q-item-section avatar top class="q-pr-xs">
+                    <q-btn flat round icon="las la-user-tie">
+                      <q-menu anchor="top right">
+                        <q-list class="">
                           <q-item
-                            v-close-popup
-                            v-for="to in otherRooms(item.id)"
-                            :key="to.id"
                             clickable
-                            @click="move(model, item.id, to.id)"
+                            :to="`/app/rooms/sales/client/${model.client.id}`"
                           >
-                            <q-item-section avatar>
-                              <q-icon name="las la-clinic-medical" />
-                            </q-item-section>
                             <q-item-section>
-                              <q-item-label>{{ to.label }} </q-item-label>
+                              <q-item-label>Create receipt</q-item-label>
                             </q-item-section>
-                            <q-tooltip> Move to {{ to.label }} </q-tooltip>
+                            <q-item-section avatar>
+                              <q-icon name="las la-cash-register" />
+                            </q-item-section>
+                          </q-item>
+
+                          <q-item
+                            clickable
+                            :to="
+                              `/app/rooms/client-pets/${model.client.id}?date=${model.createdAt}`
+                            "
+                          >
+                            <q-item-section>
+                              <q-item-label>Queue details</q-item-label>
+                              <q-item-label caption lines="2"
+                                >update visitor details or pet's
+                                brought</q-item-label
+                              >
+                            </q-item-section>
+                          </q-item>
+                          <q-item
+                            clickable
+                            :to="`vet/signalements/${model.client.id}`"
+                          >
+                            <q-item-section>
+                              <q-item-label>Signalement</q-item-label>
+                              <q-item-label caption lines="2"
+                                >update visit date, clinical sign /
+                                anamnesis</q-item-label
+                              >
+                            </q-item-section>
                           </q-item>
                         </q-list>
                       </q-menu>
                     </q-btn>
-                  </div>
-                </q-item-section>
-              </q-item>
-              <!-- <q-item clickable v-ripple v-for="i in 0" :key="i">
-              <q-item-section avatar>
-                <q-icon color="primary" name="las la-pray" />
-              </q-item-section>
-              <q-item-section>Icon as avatar</q-item-section>
-            </q-item> -->
-            </q-list>
+                    <div style="margin-top:-12px;margin-left:-3px;">
+                      <wa-btn
+                        v-if="model.client.waPhone"
+                        :value="model.client.waPhone"
+                        :disable="loading"
+                        size="sm"
+                      />
+                      <email-btn
+                        v-if="model.client.email"
+                        :value="model.client.email"
+                        :disable="loading"
+                        size="sm"
+                      />
+                    </div>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>
+                      <q-badge
+                        v-if="model.queueNumber && model.queueNumber !== null"
+                        >{{ model.queueNumber }}</q-badge
+                      >
+                      - {{ model.client.code }} - {{ model.client.name }}
+                    </q-item-label>
+                    <q-item-label caption>
+                      {{ $util.toDateString(model.createdAt) }}
+                    </q-item-label>
+                    <q-item-label caption>
+                      remark: {{ model.remark || "-" }}
+                    </q-item-label>
+                    <q-item-label
+                      v-if="
+                        model.patients &&
+                          model.patients !== null &&
+                          model.patients.length
+                      "
+                      class="q-gutter-xs"
+                    >
+                      <q-badge
+                        v-for="p in model.patients"
+                        :key="p.id"
+                        color="grey-3"
+                        text-color="black"
+                      >
+                        <patient-to-boarding-btn
+                          :patientId="p.id"
+                          size="sm"
+                          round
+                          color="accent"
+                          flat
+                        />
+                        {{ getAnimalTypeName(p.animalTypeId) }} {{ p.name }}
+                      </q-badge>
+                    </q-item-label>
+                  </q-item-section>
+                  <q-item-section side top>
+                    <div>
+                      <q-btn
+                        flat
+                        round
+                        :disable="loading"
+                        icon="las la-times"
+                        @click="del(model.id)"
+                        v-if="imHere(item.id)"
+                        size="sm"
+                      />
+                      <q-btn
+                        flat
+                        round
+                        text-color="primary"
+                        icon="las la-ellipsis-v"
+                        :disable="loading"
+                        v-if="imHere(item.id)"
+                        size="sm"
+                      >
+                        <q-menu>
+                          <!-- <q-toolbar class="bg-grey-3">
+                          <q-toolbar-title>
+                            Move to:
+                          </q-toolbar-title>
+                        </q-toolbar> -->
+                          <q-list>
+                            <q-item
+                              v-close-popup
+                              v-for="to in otherRooms(item.id)"
+                              :key="to.id"
+                              clickable
+                              @click="move(model, item.id, to.id)"
+                            >
+                              <q-item-section avatar>
+                                <q-icon name="las la-clinic-medical" />
+                              </q-item-section>
+                              <q-item-section>
+                                <q-item-label>{{ to.label }} </q-item-label>
+                              </q-item-section>
+                              <q-tooltip> Move to {{ to.label }} </q-tooltip>
+                            </q-item>
+                          </q-list>
+                        </q-menu>
+                      </q-btn>
+                    </div>
+                  </q-item-section>
+                </q-item>
+              </q-card>
+            </q-card-section>
+            <!-- <q-list bordered style="min-height:500px;">
+              <q-item v-for  
+            </q-list> -->
             <q-card-section>
               <q-item-label caption>
                 Users in room
