@@ -193,7 +193,7 @@ export default {
       this.$emit("request", props);
       const self = this;
       setTimeout(() => {
-        self.$refs.searchInput.$el.focus();
+        self.$refs.searchInput?.$el.focus();
       }, 500);
 
       // BUG: set focus on QInput
