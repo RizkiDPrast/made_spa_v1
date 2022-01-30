@@ -28,6 +28,7 @@
             @input="closePopup('qDateProxy')"
             today-btn
             :readonly="readonly"
+            clearable
           />
         </q-popup-proxy>
       </q-icon>

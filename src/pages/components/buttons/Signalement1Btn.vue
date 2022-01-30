@@ -26,9 +26,23 @@
                   style="min-width:157px;"
                   name="visitDate"
                   maxToday
-                  v-validate="'required'"
+                  v-validate="''"
                   :error="errors.has('visitDate')"
                   :error-message="errors.first('visitDate')"
+                  dense
+                  outlined
+                  class="col-12"
+                />
+
+                <date-input
+                  label="Treatment date *"
+                  v-model="model.treatmentDate"
+                  style="min-width:157px;"
+                  name="treatmentDate"
+                  maxToday
+                  v-validate="'required'"
+                  :error="errors.has('treatmentDate')"
+                  :error-message="errors.first('treatmentDate')"
                   dense
                   outlined
                   class="col-12"
@@ -149,7 +163,11 @@ export default {
   data() {
     return {
       modal: false,
-      model: Object.assign({}, { visitDate: new Date() }, this.value),
+      model: Object.assign(
+        {},
+        { visitDate: undefined, treatmentDate: new Date() },
+        this.value
+      ),
       loading: false
     };
   },

@@ -10,7 +10,8 @@
       add-btn-class="hidden"
     >
       <template #actions>
-        <date-input v-model="date" dense label="Pick date" />
+        <date-input v-if="false" v-model="date" dense label="Pick date" />
+        <date-prev-next v-model="date" dense label="Pick date" />
         <div style="width:12px" />
       </template>
       <template #body-cell-signalements="props">
@@ -24,13 +25,24 @@
         >
         </q-td>
       </template>
-      <template #body-cell-sales="props">
+      <template #body-cell-totalSales="props">
         <q-td
           align="left"
           v-html="
-            props.row.sales &&
-              props.row.sales != null &&
-              props.row.sales.replaceAll('\n', '<br>')
+            props.row.totalSales &&
+              props.row.totalSales != null &&
+              props.row.totalSales.replaceAll('\n', '<br>')
+          "
+        >
+        </q-td>
+      </template>
+      <template #body-cell-clinicFees="props">
+        <q-td
+          align="left"
+          v-html="
+            props.row.clinicFees &&
+              props.row.clinicFees != null &&
+              props.row.clinicFees.replaceAll('\n', '<br>')
           "
         >
         </q-td>
@@ -41,8 +53,9 @@
 
 <script>
 import DateInput from "src/components/DateInput.vue";
+import DatePrevNext from "src/components/DatePrevNext.vue";
 export default {
-  components: { DateInput },
+  components: { DateInput, DatePrevNext },
   name: "DailyVisits",
   data() {
     return {
@@ -54,6 +67,9 @@ export default {
         page: 1
       }
     };
+  },
+  mounted() {
+    this.fetch();
   },
   watch: {
     date() {

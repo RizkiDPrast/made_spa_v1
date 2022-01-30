@@ -2,7 +2,7 @@
   <span>
     <q-btn
       icon="las la-cash-register"
-      @click="modal = true"
+      @click="open"
       v-bind="$attrs"
       v-on="$listeners"
     >
@@ -230,6 +230,9 @@ export default {
     this.fetch();
   },
   methods: {
+    open() {
+      this.modal = true;
+    },
     async save() {
       if (!(await this.$validator.validate())) {
         return;

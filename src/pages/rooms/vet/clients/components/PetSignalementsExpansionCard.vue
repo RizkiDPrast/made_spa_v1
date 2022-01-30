@@ -79,6 +79,9 @@
               <q-td key="visitDate">
                 {{ $util.formatDate(props.row.visitDate, "YYYY/MM/DD") }}
               </q-td>
+              <q-td key="treatmentDate">
+                {{ $util.formatDate(props.row.treatmentDate, "YYYY/MM/DD") }}
+              </q-td>
               <q-td key="weight">
                 {{ props.row.weight > 0 ? props.row.weight + " kg" : "-" }}
               </q-td>
@@ -212,6 +215,14 @@ export default {
           align: "center",
           field: "visitDate",
           label: "Visit date",
+          sortable: true,
+          style: ""
+        },
+        {
+          name: "treatmentDate",
+          align: "center",
+          field: "treatmentDate",
+          label: "Treatment date",
           sortable: true,
           style: ""
         },

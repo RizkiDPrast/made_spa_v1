@@ -47,6 +47,17 @@
                 :key="model.id"
                 class="col-4 q-pa-xs"
               >
+                <client-total-sales-btn
+                  :ref="`total-client-${model.client.id}`"
+                  v-show="0"
+                  :client="model.client"
+                  round
+                  size="sm"
+                  text-color="positive"
+                  flat
+                  label="Manage total sales"
+                />
+
                 <q-card bordered>
                   <q-item>
                     <q-item-section avatar top class="q-pr-xs">
@@ -147,16 +158,30 @@
                           <q-btn icon="las la-ellipsis-v" flat size="sm">
                             <q-menu>
                               <q-list>
-                                <patient-to-boarding-btn
-                                  :patientId="p.id"
-                                  dense
-                                  no-caps
-                                  round
-                                  class="q-ph-sm"
-                                  color="accent"
-                                  flat
-                                  label="Add to boarding room"
-                                />
+                                <q-item>
+                                  <patient-to-boarding-btn
+                                    :patientId="p.id"
+                                    dense
+                                    no-caps
+                                    round
+                                    class="q-ph-sm"
+                                    color="accent"
+                                    flat
+                                    label="Add to boarding room"
+                                  />
+                                </q-item>
+                                <q-item
+                                  clickable
+                                  :to="
+                                    `vet/signalements/${model.client.id}/${p.id}`
+                                  "
+                                >
+                                  <q-item-section>
+                                    <q-item-label>
+                                      Go to animal details page
+                                    </q-item-label>
+                                  </q-item-section>
+                                </q-item>
                               </q-list>
                             </q-menu>
                           </q-btn>
@@ -174,13 +199,14 @@
                           v-if="imHere(item.id)"
                           size="sm"
                         />
+
+                        <!-- v-if="imHere(item.id)" -->
                         <q-btn
                           flat
                           round
                           text-color="primary"
                           icon="las la-ellipsis-v"
                           :disable="loading"
-                          v-if="imHere(item.id)"
                           size="sm"
                         >
                           <q-menu anchor="bottom right">
@@ -196,6 +222,26 @@
                                 <q-icon name="las la-cash-register" />
                               </q-item-section>
                             </q-item> -->
+
+                              <q-item
+                                clickable
+                                @click="
+                                  () =>
+                                    $refs[
+                                      `total-client-${model.client.id}`
+                                    ][0].open()
+                                "
+                              >
+                                <q-item-section>
+                                  <q-item-label
+                                    >Client total sales</q-item-label
+                                  >
+                                  <q-item-label caption lines="2">
+                                    Manage total sales for a
+                                    client</q-item-label
+                                  >
+                                </q-item-section>
+                              </q-item>
 
                               <q-item
                                 clickable
@@ -282,7 +328,9 @@
 </template>
 
 <script>
+import ClientTotalSalesBtn from "src/components/buttons/ClientTotalSalesBtn.vue";
 export default {
+  components: { ClientTotalSalesBtn },
   data() {
     return {
       loading: false,
@@ -308,6 +356,11 @@ export default {
   mounted() {
     this.fetch();
     this.initHubListener();
+
+    var self = this;
+    setTimeout(() => {
+      console.log(this.$refs);
+    }, 1000);
   },
   methods: {
     async fetch() {

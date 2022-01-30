@@ -12,13 +12,17 @@
         <template v-else>
           <q-btn
             flat
-            round
             :icon="isEditing ? 'las la-undo' : 'las la-lock'"
+            :color="isEditing ? '' : 'negative'"
+            :round="!isEditing"
+            :rounded="isEditing"
+            :label="isEditing ? 'Undo' : ''"
             @click="toggleEdit"
           />
           <q-btn
-            round
-            flat
+            rounded
+            color="primary"
+            label="save"
             v-show="isEditing"
             icon="las la-save"
             @click="save"
