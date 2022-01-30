@@ -271,6 +271,7 @@ export default {
         // this.loading = false;
         // return;
 
+        pager.clientId = this.client?.id || 0;
         const res = await this.$api.totalSales.get(pager);
         const dt = res.data;
         this.data = dt.rows.map(x => x);
