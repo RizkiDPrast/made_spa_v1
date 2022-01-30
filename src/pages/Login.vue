@@ -16,7 +16,7 @@
       >
         <q-toolbar
           class="q-pb-md"
-          style="background-image: linear-gradient(81deg, hsl(52deg 71% 46%), #000000 0%)"
+          style="background-image: linear-gradient(81deg, rgb(201, 178, 34), rgb(148 114 168) 0%)"
         >
           <q-avatar size="6em">
             <img src="/favicon.png" />
