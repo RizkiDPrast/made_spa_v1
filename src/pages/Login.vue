@@ -172,7 +172,7 @@ export default {
         if (this.$store.state.returnTo) {
           this.$router.replace(this.$store.state.returnTo);
         } else {
-          this.$router.replace("/app/rooms");
+          this.$router.replace("/app/rooms/on-sites");
         }
       } catch (e) {
         this.$toastr.error(e);
