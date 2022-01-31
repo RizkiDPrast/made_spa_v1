@@ -138,68 +138,75 @@
                 autocomplete="off"
               />
 
-              <q-input
-                clearable
-                v-if="!modelInput.id"
-                v-model="modelInput.password"
-                name="password"
-                class=""
-                type="password"
-                v-validate="{
-                  required: true,
-                  max: 50,
-                  is: modelInput.confirmPassword
-                }"
-                :error="errors.has('password')"
-                :error-message="errors.first('password')"
-                outlined
-                label="Password *"
-                autocomplete="off"
-                dense
-              />
-              <q-input
-                clearable
-                v-if="!modelInput.id"
-                v-model="modelInput.confirmPassword"
-                name="confirmPassword"
-                class=""
-                type="password"
-                outlined
-                label="Confirm Password *"
-                autocomplete="off"
-                dense
-              />
+              <template
+                v-if="
+                  !modelInput.id ||
+                    originalUserName(modelInput.id) !== modelInput.userName
+                "
+              >
+                <q-input
+                  clearable
+                  v-model="modelInput.password"
+                  name="password1"
+                  class=""
+                  type="password"
+                  v-validate="{
+                    required: true,
+                    max: 50,
+                    min: 5,
+                    is: modelInput.confirmPassword
+                  }"
+                  :error="errors.has('password1')"
+                  :error-message="errors.first('password1')"
+                  outlined
+                  label="Password *"
+                  autocomplete="off"
+                  dense
+                />
+                <q-input
+                  clearable
+                  v-model="modelInput.confirmPassword"
+                  name="confirmPassword"
+                  class=""
+                  type="password"
+                  outlined
+                  label="Confirm Password *"
+                  autocomplete="off"
+                  dense
+                />
+              </template>
 
-              <q-input
-                v-if="modelInput.id"
-                v-model="modelInput.password"
-                name="password2"
-                class=""
-                type="password"
-                v-validate="{
-                  required: false,
-                  max: 50,
-                  is: modelInput.confirmPassword
-                }"
-                :error="errors.has('password2')"
-                :error-message="errors.first('password2')"
-                outlined
-                label="Password *"
-                autocomplete="off"
-                dense
-                hint="Leave empty to keep current user's password"
-              />
-              <q-input
-                v-if="modelInput.id"
-                v-model="modelInput.confirmPassword"
-                name="confirmPassword2"
-                class=""
-                type="password"
-                outlined
-                label="Confirm Password *"
-                autocomplete="off"
-                dense
-              />
+              <template v-else>
+                <q-input
+                  v-model="modelInput.password"
+                  name="password2"
+                  class=""
+                  type="password"
+                  v-validate="{
+                    required: false,
+                    max: 50,
+                    min: 5,
+                    is: modelInput.confirmPassword
+                  }"
+                  :error="errors.has('password2')"
+                  :error-message="errors.first('password2')"
+                  outlined
+                  label="Password *"
+                  autocomplete="off"
+                  dense
+                  hint="Leave empty to keep current user's password"
+                />
+                <q-input
+                  v-model="modelInput.confirmPassword"
+                  name="confirmPassword2"
+                  class=""
+                  type="password"
+                  outlined
+                  label="Confirm Password *"
+                  autocomplete="off"
+                  dense
+                />
+              </template>
 
               <q-toggle
                 v-if="modelInput.id"
@@ -209,6 +216,7 @@
               />
 
               <q-btn
+                type="submit"
                 :loading="loading"
                 icon="las la-save"
                 label="Save"
@@ -309,6 +317,12 @@ export default {
           field: "lastActivityAt",
           align: "left",
           format: val => this.$util.toDateString(val)
+        },
+        {
+          name: "id",
+          label: "ID",
+          field: "id",
+          align: "left"
         }
       ],
       pager: {
@@ -325,6 +339,9 @@ export default {
     this.fetch();
   },
   methods: {
+    originalUserName(id) {
+      return this.data.find(x => x.id == [id])?.userName;
+    },
     async removeLockout(id) {
       if (!id) return;
       if (this.removingLockout) return;
@@ -344,6 +361,7 @@ export default {
     },
     async save() {
       if (!(await this.$validator.validate())) {
+        this.$toastr.warn("Please complete all errors");
         return;
       }
 
@@ -399,6 +417,7 @@ export default {
     add() {
       this.modelInput = {};
       this.focus();
+      this.$validator.reset();
     },
     edit(id) {
       let t = this.data.find(x => x.id === id);
@@ -407,6 +426,7 @@ export default {
       }
       this.modelInput = Object.assign({}, t);
       this.focus();
+      this.$validator.reset();
     },
     async del(id) {
       if (this.loading) return;
