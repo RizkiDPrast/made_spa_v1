@@ -82,6 +82,7 @@
                   />
 
                   <q-btn
+                    type="submit"
                     :loading="loading"
                     icon="las la-save"
                     label="Save"
@@ -123,6 +124,7 @@
                 />
 
                 <q-btn
+                  type="submit"
                   :loading="loading"
                   icon="las la-save"
                   label="Save"

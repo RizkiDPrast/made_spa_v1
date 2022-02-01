@@ -48,14 +48,6 @@ export default {
       let dt = this.data
         .map(x => x)
         .sort((a, b) => {
-          // const na =
-          //   a.displayName && a.displayName !== null
-          //     ? a.displayName
-          //     : a.userName;
-          // const nb =
-          //   b.displayName && b.displayName !== null
-          //     ? b.displayName
-          //     : b.userName;
           return a.label > b.label ? 1 : 0;
         });
       if (!this.filter) {
