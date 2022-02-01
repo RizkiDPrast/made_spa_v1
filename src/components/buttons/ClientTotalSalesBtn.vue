@@ -110,58 +110,58 @@
               </q-card-section>
             </q-card>
           </div>
-
-          <q-dialog v-if="$q.screen.lt.md" v-model="modal1">
-            <q-card class="my-card">
-              <q-toolbar>
-                <q-toolbar-title>
-                  Add / Edit
-                </q-toolbar-title>
-              </q-toolbar>
-              <q-card-section>
-                <q-form @submit="save">
-                  <money-field
-                    outlined
-                    dense
-                    ref="total"
-                    label="Total"
-                    name="total"
-                    v-model="m2.total"
-                    v-validate="'required|min_value:500'"
-                    :error="errors.has('total')"
-                    :error-message="errors.first('total')"
-                  />
-                  <q-input
-                    ref="notes"
-                    v-model="m2.notes"
-                    name="notes"
-                    class=""
-                    v-validate="'required|max:50'"
-                    :error="errors.has('notes')"
-                    :error-message="errors.first('notes')"
-                    outlined
-                    label="Notes"
-                    autocomplete="off"
-                    dense
-                  />
-
-                  <q-btn
-                    type="submit"
-                    :loading="loading"
-                    icon="las la-save"
-                    label="Save"
-                    title="Save"
-                    text-color="white"
-                    class="full-width"
-                    color="primary"
-                    :disable="loading"
-                    @click.stop="save"
-                  />
-                </q-form>
-              </q-card-section>
-            </q-card>
-          </q-dialog>
         </q-card-section>
+        <q-dialog v-if="$q.screen.lt.md" v-model="modal1">
+          <q-card class="full-width">
+            <q-toolbar>
+              <q-toolbar-title>
+                Add / Edit
+              </q-toolbar-title>
+              <q-btn icon="las la-times" v-close-popup flat />
+            </q-toolbar>
+            <q-card-section>
+              <q-form @submit="save">
+                <money-field
+                  outlined
+                  dense
+                  ref="total"
+                  label="Total"
+                  name="total"
+                  v-model="m2.total"
+                  v-validate="'required|min_value:500'"
+                  :error="errors.has('total')"
+                  :error-message="errors.first('total')"
+                />
+                <q-input
+                  ref="notes"
+                  v-model="m2.notes"
+                  name="notes"
+                  class=""
+                  v-validate="'required|max:50'"
+                  :error="errors.has('notes')"
+                  :error-message="errors.first('notes')"
+                  outlined
+                  label="Notes"
+                  autocomplete="off"
+                  dense
+                />
+
+                <q-btn
+                  type="submit"
+                  :loading="loading"
+                  icon="las la-save"
+                  label="Save"
+                  title="Save"
+                  text-color="white"
+                  class="full-width"
+                  color="primary"
+                  :disable="loading"
+                  @click.stop="save"
+                />
+              </q-form>
+            </q-card-section>
+          </q-card>
+        </q-dialog>
       </q-card>
     </q-dialog>
   </span>

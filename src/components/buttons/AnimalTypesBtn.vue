@@ -1,6 +1,7 @@
 <template>
   <div>
     <q-btn
+      v-if="$q.screen.gt.sm"
       icon="las la-paw"
       @click="modal = true"
       v-bind="$attrs"
@@ -10,6 +11,18 @@
         Manage animal types
       </q-tooltip>
     </q-btn>
+
+    <q-item
+      clickable
+      v-else
+      @click="modal = true"
+      v-bind="$attrs"
+      v-on="$listeners"
+    >
+      <q-item-section>
+        Manage animal types
+      </q-item-section>
+    </q-item>
 
     <q-dialog v-model="modal" persistent full-width full-height maximized>
       <q-card>
@@ -26,7 +39,10 @@
           />
         </q-toolbar>
         <q-card-section class="row">
-          <div class="col-8 q-pa-sm">
+          <div
+            class="col-xs-12 col-md-8"
+            :class="$q.screen.gt.sm ? 'q-pa-sm' : ''"
+          >
             <my-table
               title="Animal type list"
               :loading="loading"
@@ -42,7 +58,7 @@
             >
             </my-table>
           </div>
-          <div class="col-4 q-pa-sm">
+          <div class="gt-sm col-md-4 q-pa-sm">
             <q-card class="my-card">
               <q-toolbar>
                 <q-toolbar-title>
@@ -81,6 +97,46 @@
             </q-card>
           </div>
         </q-card-section>
+
+        <q-dialog full-width v-if="$q.screen.lt.md" v-model="modal1">
+          <q-card class="my-card">
+            <q-toolbar>
+              <q-toolbar-title>
+                Add / Edit
+              </q-toolbar-title>
+              <q-btn icon="las la-times" v-close-popup flat />
+            </q-toolbar>
+            <q-card-section>
+              <q-form @submit="save">
+                <q-input
+                  ref="typeName"
+                  v-model="type.name"
+                  name="name"
+                  class=""
+                  v-validate="'required|max:25'"
+                  :error="errors.has('name')"
+                  :error-message="errors.first('name')"
+                  outlined
+                  label="Animal type name *"
+                  autocomplete="off"
+                  dense
+                />
+
+                <q-btn
+                  :loading="loading"
+                  icon="las la-save"
+                  label="Save"
+                  title="Save"
+                  text-color="white"
+                  class="full-width"
+                  color="secondary"
+                  :disable="loading"
+                  @click.stop="save"
+                />
+              </q-form>
+            </q-card-section>
+          </q-card>
+        </q-dialog>
       </q-card>
     </q-dialog>
   </div>
@@ -125,7 +181,8 @@ export default {
         page: 1,
         rowsPerPage: 25
       },
-      filter: undefined
+      filter: undefined,
+      modal1: false
     };
   },
   mounted() {
@@ -148,6 +205,7 @@ export default {
         }
         this.$toastr.success("Record was updated");
         this.loading = false;
+        this.closeModalIfRequired();
         this.fetch();
       } catch (error) {
         this.loading = false;
@@ -187,11 +245,22 @@ export default {
       }
       this.loading = false;
     },
+    openModalIfRequired() {
+      if (this.$q.screen.lt.md) {
+        this.modal1 = true;
+      } else {
+        this.modal1 = false;
+      }
+    },
+    closeModalIfRequired() {
+      this.modal1 = false;
+    },
     focus() {
       this.$refs.typeName.focus();
     },
     add() {
       this.type = new AnimalType();
+      this.openModalIfRequired();
       this.focus();
     },
     edit(id) {
@@ -200,6 +269,7 @@ export default {
         throw "Could not find details record. Please refresh table";
       }
       this.type = new AnimalType(t);
+      this.openModalIfRequired();
       this.focus();
     },
     async del(id) {

@@ -2,7 +2,7 @@
   <q-page>
     <page-header />
     <q-card-section class="row">
-      <div class="col-8 q-pa-sm">
+      <div class="col-xs-12 col-md-8" :class="$q.screen.gt.sm ? 'q-pa-sm' : ''">
         <my-table
           title="User list"
           :loading="loading"
@@ -54,7 +54,7 @@
           </template>
         </my-table>
       </div>
-      <div class="col-4 q-pa-sm">
+      <div class="gt-sm col-md-4 q-pa-sm">
         <q-card class="my-card">
           <q-toolbar>
             <q-toolbar-title>
@@ -233,6 +233,185 @@
       </div>
     </q-card-section>
     <q-file v-model="file" label="Standard" />
+
+    <q-dialog v-if="$q.screen.lt.md" v-model="modal1">
+      <q-card class="my-card full-width full-height">
+        <q-toolbar>
+          <q-toolbar-title>
+            Add / Edit User
+          </q-toolbar-title>
+          <q-btn icon="las la-times" v-close-popup flat />
+        </q-toolbar>
+        <q-card-section>
+          <q-form @submit="save" class="q-col-gutter-md full-width">
+            <div
+              v-if="
+                modelInput.avatar &&
+                  modelInput.avatar != null &&
+                  modelInput.avatar.fileUri
+              "
+              class="full-width flex-center"
+            >
+              <q-avatar>
+                <q-img :src="modelInput.avatar.fileUri" />
+              </q-avatar>
+            </div>
+
+            <my-file-input
+              v-model="modelInput.file"
+              outlined
+              dense
+              name="file"
+              label="Avatar"
+              accept="image/*"
+              :max-file-size="1 * 1024 * 1024"
+              clearable
+              hint="Image file with maximum size of 1 MB"
+            />
+
+            <q-input
+              ref="name"
+              v-model="modelInput.userName"
+              name="name"
+              class=""
+              v-validate="'required|max:25|alpha_num'"
+              :error="errors.has('name')"
+              :error-message="errors.first('name')"
+              outlined
+              label="UserName *"
+              autocomplete="off"
+              dense
+            />
+
+            <q-input
+              ref="email"
+              v-model="modelInput.email"
+              name="email"
+              class=""
+              v-validate="'required|email'"
+              :error="errors.has('email')"
+              :error-message="errors.first('email')"
+              outlined
+              label="Email *"
+              autocomplete="off"
+              dense
+            />
+
+            <q-input
+              v-model="modelInput.displayName"
+              name="displayName"
+              class=""
+              v-validate="'required|max:50'"
+              :error="errors.has('displayName')"
+              :error-message="errors.first('displayName')"
+              outlined
+              label="Display Name *"
+              autocomplete="off"
+              dense
+            />
+
+            <q-select
+              v-model="modelInput.roleName"
+              :options="roles"
+              label="Role"
+              dense
+              outlined
+              autocomplete="off"
+            />
+
+            <template
+              v-if="
+                !modelInput.id ||
+                  originalUserName(modelInput.id) !== modelInput.userName
+              "
+            >
+              <q-input
+                clearable
+                v-model="modelInput.password"
+                name="password1"
+                class=""
+                type="password"
+                v-validate="{
+                  required: true,
+                  max: 50,
+                  min: 5,
+                  is: modelInput.confirmPassword
+                }"
+                :error="errors.has('password1')"
+                :error-message="errors.first('password1')"
+                outlined
+                label="Password *"
+                autocomplete="off"
+                dense
+              />
+              <q-input
+                clearable
+                v-model="modelInput.confirmPassword"
+                name="confirmPassword"
+                class=""
+                type="password"
+                outlined
+                label="Confirm Password *"
+                autocomplete="off"
+                dense
+              />
+            </template>
+
+            <template v-else>
+              <q-input
+                v-model="modelInput.password"
+                name="password2"
+                class=""
+                type="password"
+                v-validate="{
+                  required: false,
+                  max: 50,
+                  min: 5,
+                  is: modelInput.confirmPassword
+                }"
+                :error="errors.has('password2')"
+                :error-message="errors.first('password2')"
+                outlined
+                label="Password *"
+                autocomplete="off"
+                dense
+                hint="Leave empty to keep current user's password"
+              />
+              <q-input
+                v-model="modelInput.confirmPassword"
+                name="confirmPassword2"
+                class=""
+                type="password"
+                outlined
+                label="Confirm Password *"
+                autocomplete="off"
+                dense
+              />
+            </template>
+
+            <q-toggle
+              v-if="modelInput.id"
+              v-model="modelInput.blockUser"
+              :label="modelInput.blockUser ? 'Activate' : 'Deactivate'"
+              color="negative"
+            />
+
+            <q-btn
+              type="submit"
+              :loading="loading"
+              icon="las la-save"
+              label="Save"
+              title="Save"
+              text-color="white"
+              class="full-width q-mt-md"
+              color="secondary"
+              :disable="loading"
+              @click.stop="save"
+            />
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -332,7 +511,8 @@ export default {
       },
       filter: undefined,
       removingLockout: false,
-      file: undefined
+      file: undefined,
+      modal1: false
     };
   },
   mounted() {
@@ -378,6 +558,7 @@ export default {
         this.$toastr.success("Record was updated");
         this.modelInput = {};
         this.loading = false;
+        this.closeModalIfRequired();
         this.fetch();
       } catch (error) {
         this.loading = false;
@@ -411,11 +592,22 @@ export default {
       }
       this.loading = false;
     },
+    openModalIfRequired() {
+      if (this.$q.screen.lt.md) {
+        this.modal1 = true;
+      } else {
+        this.modal1 = false;
+      }
+    },
+    closeModalIfRequired() {
+      this.modal1 = false;
+    },
     focus() {
       this.$refs.name.focus();
     },
     add() {
       this.modelInput = {};
+      this.openModalIfRequired();
       this.focus();
       this.$validator.reset();
     },
@@ -425,6 +617,7 @@ export default {
         throw "Could not find details record. Please refresh table";
       }
       this.modelInput = Object.assign({}, t);
+      this.openModalIfRequired();
       this.focus();
       this.$validator.reset();
     },
