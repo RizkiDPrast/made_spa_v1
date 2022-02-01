@@ -123,14 +123,13 @@ export default {
     },
     menus() {
       var arr = [
-        // {
-        //   to: "/app/rooms/dashboard",
-        //   label: "Dashboard",
-        //   icon: "las la-chart-bar",
-        //   caption: "Analytical overview",
-        //   class: "text-warning",
-        //   filter: this.isFinance || this.isAdmin
-        // },
+        {
+          to: "/app/rooms/dashboard",
+          label: "Dashboard",
+          icon: "las la-chart-bar",
+          caption: "Analytical overview",
+          filter: this.isFinance || this.isAdmin
+        },
         {
           to: "/app/rooms/on-sites",
           label: "Queue",

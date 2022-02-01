@@ -30,7 +30,7 @@ export default {
     return {
       options: {
         title: {
-          text: "Sales, Revenues, Purchases and Cash outs"
+          text: "Total Sales and Clinic Fees"
         },
         chart: {
           height: 350,
@@ -49,7 +49,6 @@ export default {
             columnWidth: "50%"
           }
         },
-        
 
         fill: {
           opacity: [1, 0.25, 0.65, 0.65],
@@ -82,7 +81,7 @@ export default {
           y: {
             formatter: function(y) {
               if (typeof y !== "undefined") {
-                return y.toLocaleString('id-ID');
+                return y.toLocaleString("id-ID");
               }
               return y;
             }
@@ -97,19 +96,19 @@ export default {
         },
         {
           type: "area",
-          name: "Revenue",
-          data: []
-        },
-        {
-          type: "column",
-          name: "Purchase",
-          data: []
-        },
-        {
-          type: "column",
-          name: "Cash out",
+          name: "Clinic Fees",
           data: []
         }
+        // {
+        //   type: "column",
+        //   name: "Purchase",
+        //   data: []
+        // },
+        // {
+        //   type: "column",
+        //   name: "Cash out",
+        //   data: []
+        // }
       ],
       year: new Date(),
       loading: false
@@ -157,26 +156,32 @@ export default {
           if (!dt) return 0;
           return dt.totalSales;
         });
+        // this.series[1].data = this.months.map((x, i) => {
+        //   let dt = sales.find(s => s.month === i + 1);
+        //   if (!dt) return 0;
+        //   return dt.totalRevenue;
+        // });
+
+        let cfee = res.data.clinicFee;
         this.series[1].data = this.months.map((x, i) => {
-          let dt = sales.find(s => s.month === i + 1);
+          let dt = cfee.find(s => s.month === i + 1);
           if (!dt) return 0;
-          return dt.totalRevenue;
+          return dt.totalSales;
         });
 
-        let purchases = res.data.purchases;
-        this.series[2].data = this.months.map((x, i) => {
-          let dt = purchases.find(s => s.month === i + 1);
-          if (!dt) return 0;
-          return dt.totalPurchase;
-        });
+        // let purchases = res.data.purchases;
+        // this.series[2].data = this.months.map((x, i) => {
+        //   let dt = purchases.find(s => s.month === i + 1);
+        //   if (!dt) return 0;
+        //   return dt.totalPurchase;
+        // });
 
-        let cashOuts = res.data.cashOuts;
-        this.series[3].data = this.months.map((x, i) => {
-          let dt = cashOuts.find(s => s.month === i + 1);
-          if (!dt) return 0;
-          return -dt.totalCashOut;
-        });
-
+        // let cashOuts = res.data.cashOuts;
+        // this.series[3].data = this.months.map((x, i) => {
+        //   let dt = cashOuts.find(s => s.month === i + 1);
+        //   if (!dt) return 0;
+        //   return -dt.totalCashOut;
+        // });
       } catch (error) {
         this.$toastr.error(error);
       }

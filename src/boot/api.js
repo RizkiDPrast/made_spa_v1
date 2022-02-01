@@ -644,10 +644,9 @@ export const api = {
       axios.get("dashboard/SalesData", { params: { year } }),
     getVisitData: year =>
       axios.get("dashboard/ClientVisits", { params: { year } }),
-    getInsightData: date =>
-      axios.get("dashboard/Insight", { params: { date } }),
-    getTopCategoriesData: date =>
-      axios.get("dashboard/TopCategories", { params: { date } })
+    getInsightData: date => axios.get("dashboard/Insight", { params: { date } })
+    // getTopCategoriesData: date =>
+    //   axios.get("dashboard/TopCategories", { params: { date } })
   },
   database: {
     importClients: (fd, config) => axios.post("imports/clients", fd, config),

@@ -13,10 +13,17 @@
         />
         <date-prev-next type="year" v-model="year" />
       </q-toolbar>
-      <q-card-section style="height:735px">
-        <q-linear-progress v-if="loading" />
-        <q-scroll-area v-else style="width:100%;height:700px">
-          <apexchart :options="options" :series="options.series" />
+      <q-card-section>
+        <q-scroll-area style="height:600px">
+          <q-linear-progress v-if="loading" />
+          <apexchart
+            v-else
+            width="100%"
+            height="300px"
+            style="min-width:400px!important"
+            :options="options"
+            :series="options.series"
+          />
         </q-scroll-area>
       </q-card-section>
     </q-card>
@@ -35,24 +42,24 @@ export default {
           height: 500,
           width: "100%",
           stacked: true,
-          foreColor: "#999",      
-          
-        // toolbar: {
-        //     show: true,
-        //      offsetX: 0,
-        //     offsetY: 0,
-        //     tools: {
-        //       download: true,
-        //       selection: true,
-        //       zoom: true,
-        //       zoomin: true,
-        //       zoomout: true,
-        //       pan: true,
-        //       reset: true | '<img src="/static/icons/reset.png" width="20">',
-        //       customIcons: []
-        //     },
-        //     autoselect: 'zoom'
-        //   }              
+          foreColor: "#999"
+
+          // toolbar: {
+          //     show: true,
+          //      offsetX: 0,
+          //     offsetY: 0,
+          //     tools: {
+          //       download: true,
+          //       selection: true,
+          //       zoom: true,
+          //       zoomin: true,
+          //       zoomout: true,
+          //       pan: true,
+          //       reset: true | '<img src="/static/icons/reset.png" width="20">',
+          //       customIcons: []
+          //     },
+          //     autoselect: 'zoom'
+          //   }
         },
         plotOptions: {
           bar: {
@@ -103,7 +110,7 @@ export default {
             style: {
               fontSize: "14px"
             }
-          },
+          }
         },
         grid: {
           xaxis: {
@@ -141,7 +148,7 @@ export default {
         tooltip: {
           shared: true,
           intersect: false
-        },
+        }
       }
     };
   },
