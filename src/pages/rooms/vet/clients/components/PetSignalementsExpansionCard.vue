@@ -289,7 +289,11 @@ export default {
   },
   computed: {
     newModel() {
-      return { patientId: this.patient.id, visitDate: new Date() };
+      return {
+        patientId: this.patient.id,
+        visitDate: null,
+        treatmentDate: new Date()
+      };
     },
     selected: {
       get() {

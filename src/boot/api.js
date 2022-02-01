@@ -287,6 +287,7 @@ export const api = {
   },
   reports: {
     getVisit: date => axios.get(`/reports/visit`, { params: { date } }),
+    getActivity: date => axios.get(`/reports/activity`, { params: { date } }),
     getSalesMonth: date =>
       axios.get(`/reports/monthly-sales`, { params: { date } })
   },

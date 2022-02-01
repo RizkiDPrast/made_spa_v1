@@ -19,13 +19,14 @@ export default {
   name: "reports",
   components: {
     VisitsTab,
+    ActivitiesTab: () => import("./components/ActivitiesTab.vue"),
     ProfitsTab: () => import("./components/ProfitsTab.vue"),
     SalesTab: () => import("./components/SalesTab.vue")
   },
   data() {
     return {
       tab: "VisitsTab",
-      options: ["VisitsTab"]
+      options: ["VisitsTab", "ActivitiesTab"]
       // options: ["VisitsTab", "SalesTab", "ProfitsTab"]
     };
   }
