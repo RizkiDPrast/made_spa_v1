@@ -1,24 +1,6 @@
 <template>
-  <div class="row">
-    <q-btn
-      :class="iconClass"
-      flat
-      round
-      size="xs"
-      icon="las la-chevron-left"
-      @click="prev"
-    />
-    <date-input
-      borderless
-      dense
-      v-model="model"
-      :input-class="$attrs['input-class'] + ' text-center non-selectable'"
-      class="non-selectable"
-      :style="style"
-      v-bind="$attrs"
-      v-on="$listeners"
-    >
-      <!-- <template #prepend>
+  <span>
+    <div class="row" v-if="type === 'day'">
       <q-btn
         :class="iconClass"
         flat
@@ -27,8 +9,17 @@
         icon="las la-chevron-left"
         @click="prev"
       />
-    </template>
-    <template #append>
+      <date-input
+        borderless
+        dense
+        v-model="model"
+        :input-class="$attrs['input-class'] + ' text-center non-selectable'"
+        class="non-selectable"
+        :style="style"
+        v-bind="$attrs"
+        v-on="$listeners"
+      >
+      </date-input>
       <q-btn
         :class="iconClass"
         flat
@@ -37,17 +28,41 @@
         icon="las la-chevron-right"
         @click="next"
       />
-    </template> -->
-    </date-input>
-    <q-btn
-      :class="iconClass"
-      flat
-      round
-      size="xs"
-      icon="las la-chevron-right"
-      @click="next"
-    />
-  </div>
+    </div>
+    <template v-else>
+      <q-input
+        borderless
+        dense
+        readonly
+        v-model="model"
+        :input-class="$attrs['input-class'] + ' text-center non-selectable'"
+        class="non-selectable"
+        :style="style"
+        v-bind="$attrs"
+      >
+        <template #prepend>
+          <q-btn
+            :class="iconClass"
+            flat
+            round
+            size="xs"
+            icon="las la-chevron-left"
+            @click="prev"
+          />
+        </template>
+        <template #append>
+          <q-btn
+            :class="iconClass"
+            flat
+            round
+            size="xs"
+            icon="las la-chevron-right"
+            @click="next"
+          />
+        </template>
+      </q-input>
+    </template>
+  </span>
 </template>
 <script>
 import DateInput from "./DateInput.vue";
