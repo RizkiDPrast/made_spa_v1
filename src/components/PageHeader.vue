@@ -34,7 +34,7 @@
         </q-toolbar-title>
 
         <template v-if="$q.screen.gt.sm">
-          <calendar-btn />
+          <calendar-btn v-if="false" />
           <slot name="actions">
             <!-- <q-btn flat round dense icon="las la-ellipsis-v" /> -->
           </slot>
@@ -43,7 +43,7 @@
           <q-btn icon="las la-ellipsis-v" flat round>
             <q-menu>
               <q-list>
-                <calendar-btn />
+                <calendar-btn v-if="false" />
                 <slot name="actions">
                   <!-- <q-btn flat round dense icon="las la-ellipsis-v" /> -->
                 </slot>
