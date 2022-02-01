@@ -10,7 +10,10 @@
     </div>
 
     <q-card v-else class="bordered  q-mt-md">
-      <q-toolbar flat>
+      <q-toolbar
+        flat
+        style="position:sticky;top:0;background: white;z-index: 2;"
+      >
         <q-btn icon="las la-arrow-left" dense flat @click="$router.back()" />
         <q-toolbar-title>
           Client details
