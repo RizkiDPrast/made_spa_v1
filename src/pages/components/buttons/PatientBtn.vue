@@ -51,9 +51,11 @@
                 :outlined="true"
                 input-debounce="50"
                 label="Animal types"
+                class="q-mt-md"
+                dense
               >
                 <template #after>
-                  <animal-types-btn flat round />
+                  <animal-types-btn flat round small />
                 </template>
               </animal-type-select>
               <q-input
@@ -66,13 +68,15 @@
                 outlined
                 label="Name"
                 autocomplete="off"
+                dense
               />
-              <sex-select v-model="model.sex" outlined label="Sex" />
+              <sex-select v-model="model.sex" outlined label="Sex" dense />
               <date-input
                 v-model="model.doB"
                 class="q-mt-md"
                 :hint="'age: ' + model.age"
                 label="DoB"
+                dense
               />
 
               <q-input
@@ -86,6 +90,7 @@
                 label="Notes"
                 autocomplete="off"
                 autogrow
+                dense
               />
 
               <q-btn

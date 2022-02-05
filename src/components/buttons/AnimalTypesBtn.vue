@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-btn
-      v-if="$q.screen.gt.sm"
+      v-if="$q.screen.gt.sm || small"
       icon="las la-paw"
       @click="modal = true"
       v-bind="$attrs"
@@ -147,7 +147,12 @@
 <script>
 import AnimalType from "src/models/AnimalType";
 export default {
-  props: {},
+  props: {
+    small: {
+      type: Boolean,
+      default: () => false
+    }
+  },
   computed: {},
   data() {
     return {

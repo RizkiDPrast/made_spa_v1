@@ -8,18 +8,29 @@
     <div class="row full-width flex-center" v-if="!model || model == null">
       <my-circular-progress />
     </div>
-
-    <q-card v-else class="bordered  q-mt-md">
-      <q-toolbar
-        flat
-        style="position:sticky;top:0;background: white;z-index: 2;"
-      >
-        <q-btn icon="las la-arrow-left" dense flat @click="$router.back()" />
-        <q-toolbar-title>
-          Client details
-        </q-toolbar-title>
-        <BtnMoveClient v-model="onsite" class="q-mr-sm" />
-        <!-- <ItemUsageBtn
+    <q-expansion-item
+      header-class="bg-accent no-margin"
+      expand-icon-class="text-white"
+      v-else
+      :default-opened="!model.id"
+    >
+      <template #header>
+        <q-toolbar
+          flat
+          class="transparent text-white"
+          style="position:sticky;top:0;background: white;z-index: 2;"
+        >
+          <q-btn icon="las la-arrow-left" dense flat @click="$router.back()" />
+          <q-toolbar-title>
+            Client details
+            <span v-if="model.id && model.name">
+              <q-item-label title>
+                {{ model.code }} - {{ model.name }}
+              </q-item-label>
+            </span>
+          </q-toolbar-title>
+          <BtnMoveClient v-model="onsite" class="q-mr-sm" />
+          <!-- <ItemUsageBtn
           flat
           :clientId="model.id"
           v-if="model.id !== 0"
@@ -40,171 +51,174 @@
           color="secondary"
           icon="las la-calendar-alt"
         /> -->
-      </q-toolbar>
-      <q-card-section :class="$q.screen.lt.md ? 'no-padding' : ''">
-        <q-form
-          autocomplete="off"
-          class="row full-width q-col-gutter-xs"
-          @submit="saveClientDetails"
-        >
-          <input type="hidden" :value="model.id" ref="fid" />
+        </q-toolbar>
+      </template>
+      <q-card bordered>
+        <q-card-section :class="$q.screen.lt.md ? 'no-padding' : ''">
+          <q-form
+            autocomplete="off"
+            class="row full-width q-col-gutter-xs"
+            @submit="saveClientDetails"
+          >
+            <input type="hidden" :value="model.id" ref="fid" />
 
-          <q-input
-            :hint="
-              !model.code ||
-              model.code == null ||
-              model.code.trim() === '' ||
-              model.code === '-'
-                ? 'auto'
-                : ''
-            "
-            class="col-xs-12 col-md-2 q-my-sm q-py-xs"
-            v-model="model.code"
-            debounce="500"
-            type="text"
-            name="code"
-            label="Code *"
-            v-validate="'max:25|remoteValClientCode:fid'"
-            :error="errors.has('code')"
-            :error-message="errors.first('code')"
-            :readonly="loading"
-            dense
-            outlined
-            autocomplete="off"
-          />
-          <q-input
-            class="col-xs-12 col-md-4 q-my-sm q-py-xs"
-            v-model="model.icNumber"
-            debounce="500"
-            type="text"
-            name="icNumber"
-            label="Identity Card Number"
-            placeholder="Identity Card Number"
-            v-validate="'remoteValIc:fid'"
-            :error="errors.has('icNumber')"
-            :error-message="errors.first('icNumber')"
-            :readonly="loading"
-            dense
-            outlined
-            autocomplete="off"
-          />
-          <q-input
-            class="col-xs-12 col-md-6 q-my-sm q-py-xs"
-            v-model="model.name"
-            type="text"
-            name="name"
-            label="Name *"
-            placeholder="name"
-            v-validate="'required|max:50'"
-            :error="errors.has('name')"
-            :error-message="errors.first('name')"
-            :readonly="loading"
-            dense
-            outlined
-            autocomplete="off"
-          />
-          <q-input
-            class="col-xs-12 col-md-12 q-my-sm q-py-xs"
-            v-model="model.address"
-            type="textarea"
-            name="address"
-            label="Address"
-            placeholder="address"
-            v-validate="'max:255'"
-            :error="errors.has('address')"
-            :error-message="errors.first('address')"
-            :readonly="loading"
-            dense
-            outlined
-            autocomplete="off"
-            rows="3"
-          />
-          <q-input
-            class="col-xs-12 col-md-4 q-my-sm q-py-xs"
-            v-model="model.waPhone"
-            type="text"
-            name="waPhone"
-            label="Whatsapp number"
-            placeholder="Whatsapp number"
-            v-validate="'max:15|numeric'"
-            :error="errors.has('waPhone')"
-            :error-message="errors.first('waPhone')"
-            :readonly="loading"
-            dense
-            outlined
-            autocomplete="off"
-          >
-            <template #prepend>
-              <q-icon name="la la-whatsapp" color="green" />
-            </template>
-          </q-input>
-          <q-input
-            class="col-xs-12 col-md-4 q-my-sm q-py-xs"
-            v-model="model.otherPhones"
-            type="text"
-            name="otherPhones"
-            label="Other phones"
-            placeholder="Phones"
-            v-validate="{ max: 50, regex: /^[0-9\s,-//]*$/ }"
-            :error="errors.has('otherPhones')"
-            :error-message="errors.first('otherPhones')"
-            :readonly="loading"
-            dense
-            outlined
-            autocomplete="off"
-          >
-            <template #prepend>
-              <q-icon name="las la-phone" />
-            </template>
-          </q-input>
-          <q-input
-            class="col-xs-12 col-md-4 q-my-sm q-py-xs"
-            v-model="model.email"
-            type="text"
-            name="email"
-            label="Email"
-            placeholder="email"
-            v-validate="'email'"
-            :error="errors.has('email')"
-            :error-message="errors.first('email')"
-            :readonly="loading"
-            dense
-            outlined
-            autocomplete="off"
-          >
-            <template #prepend>
-              <q-icon name="las la-envelope" />
-            </template>
-          </q-input>
-          <q-input
-            class="col-xs-12 col-md-12 q-my-sm q-py-xs"
-            v-model="model.notes"
-            type="textarea"
-            name="notes"
-            label="Notes"
-            placeholder="notes"
-            v-validate="'max:255'"
-            :error="errors.has('notes')"
-            :error-message="errors.first('notes')"
-            :readonly="loading"
-            outlined
-            dense
-            rows="3"
-          />
-
-          <div class="col-xs-12 text-right">
-            <submit-button
-              color="primary"
-              :loading="loading"
-              @click="saveClientDetails"
-              class=""
+            <q-input
+              :hint="
+                !model.code ||
+                model.code == null ||
+                model.code.trim() === '' ||
+                model.code === '-'
+                  ? 'auto'
+                  : ''
+              "
+              class="col-xs-12 col-md-2 q-my-sm q-py-xs"
+              v-model="model.code"
+              debounce="500"
+              type="text"
+              name="code"
+              label="Code *"
+              v-validate="'max:25|remoteValClientCode:fid'"
+              :error="errors.has('code')"
+              :error-message="errors.first('code')"
+              :readonly="loading"
+              dense
+              outlined
+              autocomplete="off"
+            />
+            <q-input
+              class="col-xs-12 col-md-4 q-my-sm q-py-xs"
+              v-model="model.icNumber"
+              debounce="500"
+              type="text"
+              name="icNumber"
+              label="Identity Card Number"
+              placeholder="Identity Card Number"
+              v-validate="'remoteValIc:fid'"
+              :error="errors.has('icNumber')"
+              :error-message="errors.first('icNumber')"
+              :readonly="loading"
+              dense
+              outlined
+              autocomplete="off"
+            />
+            <q-input
+              class="col-xs-12 col-md-6 q-my-sm q-py-xs"
+              v-model="model.name"
+              type="text"
+              name="name"
+              label="Name *"
+              placeholder="name"
+              v-validate="'required|max:50'"
+              :error="errors.has('name')"
+              :error-message="errors.first('name')"
+              :readonly="loading"
+              dense
+              outlined
+              autocomplete="off"
+            />
+            <q-input
+              class="col-xs-12 col-md-12 q-my-sm q-py-xs"
+              v-model="model.address"
+              type="textarea"
+              name="address"
+              label="Address"
+              placeholder="address"
+              v-validate="'max:255'"
+              :error="errors.has('address')"
+              :error-message="errors.first('address')"
+              :readonly="loading"
+              dense
+              outlined
+              autocomplete="off"
+              rows="3"
+            />
+            <q-input
+              class="col-xs-12 col-md-4 q-my-sm q-py-xs"
+              v-model="model.waPhone"
+              type="text"
+              name="waPhone"
+              label="Whatsapp number"
+              placeholder="Whatsapp number"
+              v-validate="'max:15|numeric'"
+              :error="errors.has('waPhone')"
+              :error-message="errors.first('waPhone')"
+              :readonly="loading"
+              dense
+              outlined
+              autocomplete="off"
             >
-              {{ model.id ? "Update" : "SAVE" }}
-            </submit-button>
-          </div>
-        </q-form>
-      </q-card-section>
-    </q-card>
+              <template #prepend>
+                <q-icon name="la la-whatsapp" color="green" />
+              </template>
+            </q-input>
+            <q-input
+              class="col-xs-12 col-md-4 q-my-sm q-py-xs"
+              v-model="model.otherPhones"
+              type="text"
+              name="otherPhones"
+              label="Other phones"
+              placeholder="Phones"
+              v-validate="{ max: 50, regex: /^[0-9\s,-//]*$/ }"
+              :error="errors.has('otherPhones')"
+              :error-message="errors.first('otherPhones')"
+              :readonly="loading"
+              dense
+              outlined
+              autocomplete="off"
+            >
+              <template #prepend>
+                <q-icon name="las la-phone" />
+              </template>
+            </q-input>
+            <q-input
+              class="col-xs-12 col-md-4 q-my-sm q-py-xs"
+              v-model="model.email"
+              type="text"
+              name="email"
+              label="Email"
+              placeholder="email"
+              v-validate="'email'"
+              :error="errors.has('email')"
+              :error-message="errors.first('email')"
+              :readonly="loading"
+              dense
+              outlined
+              autocomplete="off"
+            >
+              <template #prepend>
+                <q-icon name="las la-envelope" />
+              </template>
+            </q-input>
+            <q-input
+              class="col-xs-12 col-md-12 q-my-sm q-py-xs"
+              v-model="model.notes"
+              type="textarea"
+              name="notes"
+              label="Notes"
+              placeholder="notes"
+              v-validate="'max:255'"
+              :error="errors.has('notes')"
+              :error-message="errors.first('notes')"
+              :readonly="loading"
+              outlined
+              dense
+              rows="3"
+            />
+
+            <div class="col-xs-12 text-right">
+              <submit-button
+                color="primary"
+                :loading="loading"
+                @click="saveClientDetails"
+                class="q-mb-sm q-mr-sm"
+              >
+                {{ model.id ? "Update" : "SAVE" }}
+              </submit-button>
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-expansion-item>
 
     <div class="row q-mt-md q-col-gutter-sm" v-if="model && model.id">
       <div :class="petContainerClass">
