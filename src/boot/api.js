@@ -275,6 +275,7 @@ export const api = {
   },
   onSites: {
     get: () => axios.get("onSites"),
+    getOne: () => axios.get("onSites"),
 
     getBoardingCount: () => axios.get("onSites/boarding/count"),
     getBoarding: () => axios.get("onSites/boarding"),
