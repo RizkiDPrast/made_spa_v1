@@ -48,14 +48,15 @@ export const utility = {
   age(val) {
     if (!isValid(val)) return undefined;
     if (!val) return undefined;
-    let year = getDateDiff(new Date(), val, "years");
-    if (year > 0) return `${year} year${year > 1 ? "s" : ""}`;
-
-    let months = getDateDiff(new Date(), val, "months");
-    if (months > 0) return `${months} month${months > 1 ? "s" : ""}`;
 
     let days = getDateDiff(new Date(), val, "days");
-    return `${days} day${days > 1 ? "s" : ""}`;
+    if (days < 30) return `${days} day${days < 30 ? "s" : ""}`;
+
+    let months = getDateDiff(new Date(), val, "months");
+    if (months < 12) return `${months} month${months > 1 ? "s" : ""}`;
+
+    let year = getDateDiff(new Date(), val, "years");
+    return `${year} year${year > 1 ? "s" : ""} ${Math.floor(months % 12)}mo`;
   },
 
   toNumber(val) {

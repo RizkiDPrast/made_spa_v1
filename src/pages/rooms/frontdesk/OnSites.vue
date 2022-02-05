@@ -45,7 +45,8 @@
               <div
                 v-for="model in roomData(item.id)"
                 :key="model.id"
-                class="col-4 q-pa-xs"
+                class="col-xs-12 col-md-4"
+                :class="$q.screen.gt.sm ? 'q-pa-xs' : ''"
               >
                 <client-total-sales-btn
                   :ref="`total-client-${model.client.id}`"
