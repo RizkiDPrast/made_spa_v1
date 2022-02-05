@@ -28,7 +28,7 @@
                 </q-item-label>
               </q-toolbar-title>
               <q-btn
-                v-if="item.id.indexOf('fd') === 0 && imHere(item.id)"
+                v-if="item.id.indexOf('fd') === 0"
                 rounded
                 icon="las la-plus"
                 @click="$router.push('/app/rooms/vet/clients')"
@@ -197,7 +197,6 @@
                           :disable="loading"
                           icon="las la-times"
                           @click="del(model.id)"
-                          v-if="imHere(item.id)"
                           size="sm"
                         />
 
