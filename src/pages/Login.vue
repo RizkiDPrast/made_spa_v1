@@ -16,7 +16,7 @@
       >
         <q-toolbar
           class="q-pb-md"
-          style="background-image: linear-gradient(81deg, rgb(201, 178, 34), rgb(122 113 113) 0%)"
+          style="background-image: linear-gradient(81deg, rgb(201, 178, 34), rgb(148 114 168) 0%)"
         >
           <q-avatar size="6em" class="q-mt-md">
             <img src="/favicon.png" />
@@ -209,7 +209,7 @@ export default {
   background-image: linear-gradient(45deg, $negative, $positive, $warning, $primary)
 
 .my-toolbar
-  background-image: $lin-bg-dark
+  background-image: linear-gradient(81deg, rgb(201, 178, 34), rgb(148 114 168) 0%)
 
 @media screen and (min-width: $breakpoint-md)
   #logo
