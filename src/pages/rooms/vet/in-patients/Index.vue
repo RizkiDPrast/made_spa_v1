@@ -41,8 +41,11 @@
                   <q-item-label caption>
                     {{ model.patient.age }} {{ getSexType(model.patient.sex) }}
                   </q-item-label>
-                  <q-item-label overline>
+                  <q-item-label caption>
                     stay for {{ duration(model.createdAt) }}
+                  </q-item-label>
+                  <q-item-label caption>
+                    {{ model.patient.clientName }}
                   </q-item-label>
                 </q-item-section>
                 <q-item-section side top>

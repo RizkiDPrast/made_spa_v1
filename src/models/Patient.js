@@ -16,6 +16,8 @@ export default class Patient extends UserTracker {
     avatar,
     notes,
 
+    clientName,
+
     ...params
   } = {}) {
     super(params);
@@ -30,6 +32,7 @@ export default class Patient extends UserTracker {
         : undefined;
     this.clientId = clientId;
     this.visitingToday = visitingToday;
+    this.clientName = clientName;
     this.client = client;
     this.avatar = avatar;
     this.notes = notes;
