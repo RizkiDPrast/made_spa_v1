@@ -172,45 +172,57 @@
                   rows="3"
                 />
 
-                <submit-button
-                  :loading="loading"
-                  @click="saveClientDetails"
-                  :class="model.id ? 'bg-white text-black' : 'full-width'"
-                  :style="model.id ? 'width:50%' : ''"
-                >
-                  {{ model.id ? "Update" : "Save" }}
-                </submit-button>
-                <q-btn
-                  v-if="model.id"
-                  style="width:50%"
-                  color="primary"
-                  icon="las la-user-tie"
-                  label="Add to queue"
-                  @click="commitVisitor"
-                >
-                  <q-tooltip>
-                    Add as today's visitor <br />
-                    Client:
-                    <q-badge class="q-ml-xs">
-                      {{ model.code }} - {{ model.name }}
-                    </q-badge>
-                    <br />
-                    <b>Patient</b>:
-                    <span v-show="!selectedPets.length" class="text-italic">
-                      -No patient brought-
-                    </span>
-                    <q-badge
-                      class="q-ml-xs"
-                      v-for="item in selectedPets"
-                      :key="item.id"
-                    >
-                      <q-item-label>
-                        {{ getAnimalTypeName(item.animalTypeId) }}
-                        {{ item.name }}
-                      </q-item-label>
-                    </q-badge>
-                  </q-tooltip>
-                </q-btn>
+                <div class="col-12 row justify-center q-gutter-sm">
+                  <submit-button
+                    :loading="loading"
+                    @click="saveClientDetails"
+                    :class="model.id ? 'bg-white text-black' : 'full-width'"
+                    :style="model.id ? '' : ''"
+                    outline
+                  >
+                    {{ model.id ? "Update" : "Save" }}
+                  </submit-button>
+                  <q-btn
+                    v-if="model.id"
+                    text-color="secondary"
+                    outline
+                    icon="las la-pencil-alt"
+                    label="Go To Signalement"
+                    :to="`/app/rooms/vet/signalements/${model.id}`"
+                  />
+
+                  <q-btn
+                    v-if="model.id"
+                    text-color="primary"
+                    outline
+                    icon="las la-user-tie"
+                    label="Add to queue"
+                    @click="commitVisitor"
+                  >
+                    <q-tooltip>
+                      Add as today's visitor <br />
+                      Client:
+                      <q-badge class="q-ml-xs">
+                        {{ model.code }} - {{ model.name }}
+                      </q-badge>
+                      <br />
+                      <b>Patient</b>:
+                      <span v-show="!selectedPets.length" class="text-italic">
+                        -No patient brought-
+                      </span>
+                      <q-badge
+                        class="q-ml-xs"
+                        v-for="item in selectedPets"
+                        :key="item.id"
+                      >
+                        <q-item-label>
+                          {{ getAnimalTypeName(item.animalTypeId) }}
+                          {{ item.name }}
+                        </q-item-label>
+                      </q-badge>
+                    </q-tooltip>
+                  </q-btn>
+                </div>
                 <!-- <submit-button
                 v-if="model.id"
                 :loading="loading"
