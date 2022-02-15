@@ -45,6 +45,34 @@ export default {
   methods: {
     async initHub() {
       await this.$hub.init();
+
+      const self = this;
+
+      // this.$hub.on("clientAdded", client => {
+      //   // console.log("clientAdded", client);
+      //   if (client && client.name) {
+      //     self.$toastr.success(
+      //       `New client: ${client.name.toUpperCase()} was added by ${
+      //         client.createdByName
+      //       }`
+      //     );
+      //   }
+      // });
+
+      // this.$hub.on("petAdded", pet => {
+      //   // console.log("petAdded", pet);
+      //   if (pet && client.name) {
+      //     self.$toastr.success(
+      //       `New client: ${client.name.toUpperCase()} was added by ${
+      //         client.createdByName
+      //       }`
+      //     );
+      //   }
+      // });
+
+      // this.$hub.on("petBoarded", ({ petName, byUser }) => {
+      //   console.log("petBoarded", petName, byUser);
+      // });
     }
   },
   mounted() {

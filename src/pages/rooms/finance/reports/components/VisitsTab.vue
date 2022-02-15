@@ -8,12 +8,35 @@
       :pagination.sync="pager"
       @refresh="fetch"
       add-btn-class="hidden"
+      :visible-columns="[
+        'num',
+        'client',
+        'inPatients',
+        'signalements',
+        'totalSales',
+        'clinicFees',
+        'visitDate',
+        'id'
+      ]"
     >
       <template #actions>
         <date-input v-if="false" v-model="date" dense label="Pick date" />
         <date-prev-next v-model="date" dense label="Pick date" />
         <div style="width:12px" />
       </template>
+
+      <template #body-cell-client="props">
+        <q-td>
+          <q-btn
+            dense
+            flat
+            color="primary"
+            :label="props.row.client"
+            :to="`/app/rooms/vet/signalements/${props.row.clientId}`"
+          />
+        </q-td>
+      </template>
+
       <template #body-cell-signalements="props">
         <q-td
           align="left"
@@ -91,3 +114,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.q-table tbody tr {
+  vertical-align: top;
+}
+</style>

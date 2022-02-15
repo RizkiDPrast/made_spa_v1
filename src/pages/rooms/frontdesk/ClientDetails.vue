@@ -329,6 +329,11 @@ export default {
           );
           if (res.data && res.data.id) {
             this.model = new Client(res.data);
+
+            if (isAdding) {
+              this.$hub.newClientAdded(res.data.id);
+            }
+
             // this.$router.replace('/frontdesk/clients/' + res.data.id)
           } else {
             this.reloadClient();

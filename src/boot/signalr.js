@@ -13,12 +13,10 @@ export default async ({ Vue, store }) => {
   Vue.prototype.$hub = new Hub();
 
   Vue.prototype.$hub.on("hubRoomReceived", (hubRoom, hubUsers) => {
-    console.log("hubRoomReceived", hubRoom, hubUsers);
     store.commit("app/hubRoom", hubRoom, hubUsers);
   });
 
   Vue.prototype.$hub.on("roomSwitched", (to, hubroom) => {
-    console.log("roomSwitched", to, hubroom);
     var rooms = store.state.app.rooms;
     var selected = rooms.find(x => x.id === to);
     if (selected) {
@@ -27,9 +25,9 @@ export default async ({ Vue, store }) => {
     }
   });
 
-  Vue.prototype.$hub.on('boardingCount', (count)=>{
-     store.commit('app/inPatientCount', count || 0)
-  })
+  Vue.prototype.$hub.on("boardingCount", count => {
+    store.commit("app/inPatientCount", count || 0);
+  });
 };
 
 class CustomHttpClient extends HttpClient {
@@ -41,7 +39,15 @@ class CustomHttpClient extends HttpClient {
   }
 }
 class Hub {
-  events = ["hubRoomReceived", "clientMoved", "roomSwitched", "boardingCount"];
+  events = [
+    "hubRoomReceived",
+    "clientMoved",
+    "roomSwitched",
+    "boardingCount",
+    "clientAdded",
+    "petAdded",
+    "petBoarded"
+  ];
 
   async init() {
     if (this.initializing) return;
@@ -89,11 +95,32 @@ class Hub {
     await this.connection.invoke("SwitchRoom", toRoom);
   }
 
-  async updateBoardingCount(val){
+  async updateBoardingCount(val) {
     if (!this.initialized) {
       await this.init();
     }
     await this.connection.invoke("UpdateBoardingCount", val);
+  }
+
+  async newClientAdded(clientId) {
+    if (!this.initialized) {
+      await this.init();
+    }
+    await this.connection.invoke("NewClientAdded", clientId);
+  }
+
+  async newPetAdded(petId) {
+    if (!this.initialized) {
+      await this.init();
+    }
+    await this.connection.invoke("NewPetAdded", petId);
+  }
+
+  async PetBoarded(petName, byUser) {
+    if (!this.initialized) {
+      await this.init();
+    }
+    await this.connection.invoke("PetBoarded", { petName, byUser });
   }
 
   // events

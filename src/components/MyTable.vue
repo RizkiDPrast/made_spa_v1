@@ -27,7 +27,7 @@
         <q-input
           ref="searchInput"
           :class="{ 'full-width': searchOnly }"
-          v-model="filter"
+          v-model="filterModel"
           type="text"
           debounce="500"
           @input="search"
@@ -64,7 +64,7 @@
       />
       <q-input
         :class="{ 'full-width': searchOnly }"
-        v-model="filter"
+        v-model="filterModel"
         type="text"
         debounce="500"
         @input="search"
@@ -92,7 +92,7 @@
       v-bind="$attrs"
       v-on="$listeners"
       ref="table"
-      :filter="filter"
+      :filter="filterModel"
       flat
       dense
     >
@@ -150,15 +150,24 @@ export default {
     editBtnIcon: {
       type: String,
       default: () => "las la-pen-alt"
+    },
+    filter: {
+      type: String,
+      default: () => undefined
     }
   },
   data() {
     return {
-      filter: undefined
+      filterModel: undefined
     };
   },
   mounted() {
     // console.log("scopedSlots", this.$scopedSlots);
+  },
+  watch: {
+    filter(val) {
+      this.filterModel = val;
+    }
   },
   computed: {
     loadingModel() {
@@ -180,12 +189,12 @@ export default {
       // this.$refs.table.requestServerInteraction({ filter: k });
 
       let pager = this.$refs.table.pagination || { page: 1, rowsPerPage: 25 };
-      pager.filter = this.filter;
+      pager.filter = this.filterModel;
       this.fetch({ pagination: pager });
     },
     refresh() {
       let pager = this.$refs.table.pagination || { page: 1, rowsPerPage: 25 };
-      pager.filter = this.filter;
+      pager.filter = this.filterModel;
       this.$emit("refresh", { pagination: pager });
       this.fetch({ pagination: pager });
     },

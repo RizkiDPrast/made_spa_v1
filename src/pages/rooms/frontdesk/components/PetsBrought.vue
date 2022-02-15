@@ -29,7 +29,6 @@
             <q-item tag="label" v-ripple>
               <q-item-section>
                 <q-checkbox
-                  :disable="disable(item.id)"
                   dense
                   v-model="petIds"
                   :val="item.id"
@@ -141,7 +140,7 @@ export default {
     if (d && this.$util.isValid(d.split(" ")[0])) {
       this.date = new Date(d.split(" ")[0]);
     } else {
-      this.date = undefined;
+      this.date = new Date();
     }
   },
   methods: {

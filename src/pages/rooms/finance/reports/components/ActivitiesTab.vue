@@ -10,11 +10,29 @@
       add-btn-class="hidden"
       :visible-columns="visible"
       :columns="columns"
+      :filter.sync="filter"
+      table-class="mtable"
     >
       <template #actions>
         <date-input v-if="false" v-model="date" dense label="Pick date" />
         <date-prev-next v-model="date" dense label="Pick date" />
         <div style="width:12px" />
+      </template>
+      <template #body-cell-employee="props">
+        <q-td>
+          <q-btn
+            icon="las la-filter"
+            no-caps
+            size="sm"
+            flat
+            @click="filter = props.row.employee"
+          >
+            {{ props.row.employee }}
+            <q-tooltip v-if="$q.screen.gt.sm">
+              Buat filter dengan nama ini
+            </q-tooltip>
+          </q-btn>
+        </q-td>
       </template>
       <template #body-cell-pet="props">
         <q-td align="left">
@@ -58,6 +76,7 @@ export default {
       date: new Date(),
       loading: false,
       data: [],
+      filter: undefined,
       pager: {
         rowsPerPage: 100,
         page: 1
