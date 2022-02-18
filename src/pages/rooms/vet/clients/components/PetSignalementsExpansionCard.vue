@@ -416,8 +416,8 @@ export default {
 };
 </script>
 <style lang="stylus" scoped>
-tr.selected td
-  background-color: #8080801a;
+.selected td
+  background-color: rgba(220, 220, 220, 0.8);
 .table {
   min-height:225px;
 }

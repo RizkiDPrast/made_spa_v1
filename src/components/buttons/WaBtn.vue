@@ -8,9 +8,22 @@
     text-color="green"
     icon="la la-whatsapp"
     type="a"
-    :href="`https://wa.me/+${model}`"
+    :href="`https://wa.me/${model}?text=${encodedText}`"
     v-bind="$attrs"
-  />
+    :class="encodedText && encodedText.length ? '' : ''"
+    :style="
+      encodedText && encodedText.length
+        ? 'position:absolute;bottom:18px;right:0'
+        : ''
+    "
+  >
+    <q-tooltip
+      v-if="encodedText && encodedText.length"
+      content-class="bg-positive"
+    >
+      Kirim WA dengan konten ini
+    </q-tooltip>
+  </q-btn>
 </template>
 <script>
 export default {
@@ -18,16 +31,22 @@ export default {
     value: {
       type: String,
       default: () => undefined
+    },
+    text: {
+      type: String,
+      default: () => undefined
     }
   },
-  data() {
-    return {
-      model: this.value
-    };
-  },
-  watch: {
-    value(val) {
-      this.model = val;
+  computed: {
+    model() {
+      if (!this.value || this.value === null || !this.value.replace) return "";
+      let model = this.value;
+      model = model.replace(/^(0)*/, "62").replace(/\D/g, "");
+      return model;
+    },
+    encodedText() {
+      if (!this.text || this.text === null) return "";
+      return window.encodeURIComponent(this.text);
     }
   }
 };

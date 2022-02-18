@@ -87,82 +87,117 @@
       <q-card-section>
         <div class="row full-width q-col-gutter-sm">
           <div class="col-sm-4 col-xs-12">
-            <q-input
-              ref="inpAnamnesa"
-              v-model="model.anamnesis"
-              name="anamnesa"
-              label="Anamnesa"
-              v-validate="'max:255'"
-              :error="errors.has('anamnesa')"
-              :error-message="errors.first('anamnesa')"
-              outlined
-              dense
-              :readonly="!isEditing"
-              type="textarea"
-              rows="4"
-            />
+            <div style="position:relative">
+              <q-input
+                ref="inpAnamnesa"
+                v-model="model.anamnesis"
+                name="anamnesa"
+                label="Anamnesa"
+                v-validate="'max:255'"
+                :error="errors.has('anamnesa')"
+                :error-message="errors.first('anamnesa')"
+                outlined
+                dense
+                :readonly="!isEditing"
+                autogrow
+                input-style="min-height:100px"
+              />
+              <wa-btn
+                v-if="model.anamnesis && client.waPhone"
+                :value="client.waPhone"
+                :text="model.anamnesis"
+              />
+            </div>
           </div>
           <div class="col-sm-4 col-xs-12">
-            <q-input
-              v-model="model.clinicalSign"
-              name="clinicalSign"
-              label="Clinical sign"
-              v-validate="'max:255'"
-              :error="errors.has('clinicalSign')"
-              :error-message="errors.first('clinicalSign')"
-              outlined
-              dense
-              :readonly="!isEditing"
-              type="textarea"
-              rows="4"
-            />
+            <div style="position:relative">
+              <q-input
+                v-model="model.clinicalSign"
+                name="clinicalSign"
+                label="Clinical sign"
+                v-validate="'max:255'"
+                :error="errors.has('clinicalSign')"
+                :error-message="errors.first('clinicalSign')"
+                outlined
+                dense
+                :readonly="!isEditing"
+                autogrow
+                input-style="min-height:100px"
+              />
+              <wa-btn
+                v-if="model.clinicalSign && client.waPhone"
+                :value="client.waPhone"
+                :text="model.clinicalSign"
+              />
+            </div>
           </div>
           <div class="col-sm-4 col-xs-12">
-            <q-input
-              treatment
-              v-model="model.treatment"
-              name="treatment"
-              label="Treatment"
-              v-validate="'max:255'"
-              :error="errors.has('treatment')"
-              :error-message="errors.first('treatment')"
-              outlined
-              dense
-              :readonly="!isEditing"
-              type="textarea"
-              rows="4"
-            />
+            <div style="position:relative">
+              <q-input
+                treatment
+                v-model="model.treatment"
+                name="treatment"
+                label="Treatment"
+                v-validate="'max:255'"
+                :error="errors.has('treatment')"
+                :error-message="errors.first('treatment')"
+                outlined
+                dense
+                :readonly="!isEditing"
+                autogrow
+                input-style="min-height:100px"
+              />
+              <wa-btn
+                v-if="model.treatment && client.waPhone"
+                :value="client.waPhone"
+                :text="model.treatment"
+              />
+            </div>
           </div>
 
           <div class="col-sm-6 col-xs-12">
-            <q-input
-              v-model="model.diagnose"
-              name="diagnose"
-              label="Diagnose"
-              v-validate="'max:255'"
-              :error="errors.has('diagnose')"
-              :error-message="errors.first('diagnose')"
-              outlined
-              dense
-              :readonly="!isEditing"
-              type="textarea"
-              rows="2"
-            />
+            <div style="position:relative">
+              <q-input
+                v-model="model.diagnose"
+                name="diagnose"
+                label="Diagnose"
+                v-validate="'max:255'"
+                :error="errors.has('diagnose')"
+                :error-message="errors.first('diagnose')"
+                outlined
+                dense
+                :readonly="!isEditing"
+                autogrow
+                input-style="min-height:100px"
+              />
+              <wa-btn
+                v-if="model.diagnose && client.waPhone"
+                :value="client.waPhone"
+                :text="model.diagnose"
+              />
+            </div>
           </div>
           <div class="col-sm-6 col-xs-12">
-            <q-input
-              v-model="model.notes"
-              name="notes"
-              label="Notes"
-              v-validate="'max:255'"
-              :error="errors.has('notes')"
-              :error-message="errors.first('notes')"
-              outlined
-              dense
-              :readonly="!isEditing"
-              type="textarea"
-              rows="2"
-            />
+            <div style="position:relative">
+              <q-input
+                v-model="model.notes"
+                name="notes"
+                label="Notes"
+                v-validate="'max:255'"
+                :error="errors.has('notes')"
+                :error-message="errors.first('notes')"
+                outlined
+                dense
+                :readonly="!isEditing"
+                autogrow
+                style="min-height:50px;"
+              />
+              <wa-btn
+                v-if="model.notes && client.waPhone"
+                :value="client.waPhone"
+                :text="model.notes"
+              />
+            </div>
           </div>
 
           <div class="col-12">
@@ -240,16 +275,22 @@
 </template>
 
 <script>
+import WaBtn from "src/components/buttons/WaBtn.vue";
 import AddAttachmentBtn from "./AddAttachmentBtn";
 // import ActionSelect from "./ActionSelect";
 export default {
   name: "PetSignalementsCard2",
   components: {
-    AddAttachmentBtn
+    AddAttachmentBtn,
+    WaBtn
     // ActionSelect
   },
   props: {
     value: {
+      type: Object,
+      default: () => {}
+    },
+    client: {
       type: Object,
       default: () => {}
     }

@@ -106,7 +106,7 @@
                   name="waPhone"
                   label="Whatsapp number"
                   placeholder="Whatsapp number"
-                  v-validate="'max:15|numeric'"
+                  v-validate="'max:20'"
                   :error="errors.has('waPhone')"
                   :error-message="errors.first('waPhone')"
                   :readonly="loading"

@@ -309,7 +309,7 @@ export default {
 
 <style lang="stylus">
 tr.selected td
-  background-color: #8080801a;
+  background-color: rgba(220, 220, 220, 0.8);
 .q-table__container.q-table--horizontal-separator.column.no-wrap.q-table__card.q-table--flat.q-table--dense.q-table--no-wrap
   min-height: 450px;
 </style>
