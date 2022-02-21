@@ -29,7 +29,7 @@
           :class="{ 'full-width': searchOnly }"
           v-model="filterModel"
           type="text"
-          debounce="500"
+          debounce="1000"
           @input="search"
           clearable
           borderless

@@ -12,6 +12,15 @@
           @click="fetch"
           :disable="loading"
         />
+        <q-input
+          dense
+          outlined
+          placeholder="Search..."
+          debounce="1000"
+          ref="search"
+          v-model="search"
+          clearable
+        />
       </q-toolbar>
       <div class="row">
         <div
@@ -96,23 +105,36 @@ export default {
   data() {
     return {
       loading: false,
-      data: []
+      data: [],
+      search: null
     };
   },
   computed: {
     dataModel() {
       if (!this.data.length) return [];
+
+      var data = this.data.map(x => x);
+      if (this.search) {
+        const q = this.search.toLowerCase();
+        data = data.filter(x => {
+          const pname = x.patient.name.toLowerCase();
+          const cname = x.patient.clientName.toLowerCase();
+          return pname.indexOf(q) > -1 || cname.indexOf(q) > -1;
+        });
+      }
+
       let date = this.$util.formatDate(new Date(), "YYYY-MM-DD");
       let tday = new Date(date);
-      let today = this.data.filter(
+      let today = data.filter(
         x => this.$util.getDateDiff(tday, x.createdAt, "days") === 0
       );
-      let yesterday = this.data.filter(
+      let yesterday = data.filter(
         x => this.$util.getDateDiff(tday, x.createdAt, "days") === 1
       );
-      let others = this.data.filter(
+      let others = data.filter(
         x => this.$util.getDateDiff(tday, x.createdAt, "days") > 1
       );
+
       return [
         {
           label: "Today",

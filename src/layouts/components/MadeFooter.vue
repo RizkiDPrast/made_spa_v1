@@ -17,15 +17,19 @@
           <q-item-section> </q-item-section>
         </q-item>
       </q-toolbar-title>
+      v{{ version }}
     </q-toolbar>
   </q-footer>
 </template>
 
 <script>
+import { version } from "../../../package.json";
 export default {
   name: "MadeFooter",
   data() {
-    return {};
+    return {
+      version
+    };
   }
 };
 </script>
